@@ -85,7 +85,7 @@ function signOut() {
 
 function apiGet() {
   axios
-    .get('https://endpoints-runtime-serverless-g7vn673b6q-an.a.run.app/api', {
+    .get('https://docup-endpoint-em2dgo5qcq-an.a.run.app/api', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token,

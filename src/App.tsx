@@ -5,14 +5,15 @@ import SignUpContainer from './containers/SignUpContainer';
 import { FirebaseAuth, setGoogleAuthProvider } from './components/FirebaseAuth';
 import * as firebase from 'firebase';
 
-var firebaseConfig = {
-  apiKey: 'AIzaSyACVCyQraCjymk-cFyA1PuKqGUtZ1Eh5hM',
-  authDomain: 'soilworks-expt-01-266813.firebaseapp.com',
-  databaseURL: 'https://soilworks-expt-01-266813.firebaseio.com',
-  projectId: 'soilworks-expt-01-266813',
-  storageBucket: 'soilworks-expt-01-266813.appspot.com',
-  messagingSenderId: '580669126921',
-  appId: '1:580669126921:web:4d53b03688d278c2a8bbd8',
+const firebaseConfig = {
+  apiKey: 'AIzaSyBQzMyPZ6eVB7YpV-l7rFvlUCs35ZkghjE',
+  authDomain: 'docup-269111.firebaseapp.com',
+  databaseURL: 'https://docup-269111.firebaseio.com',
+  projectId: 'docup-269111',
+  storageBucket: 'docup-269111.appspot.com',
+  messagingSenderId: '965242496332',
+  appId: '1:965242496332:web:353eb0b12f8570d98e5be9',
+  measurementId: 'G-51NS0WSMZW',
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
