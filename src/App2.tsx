@@ -4,6 +4,7 @@ import { Box, Button } from '@material-ui/core';
 import { BrowserRouter, Route, Redirect, Link, Switch } from 'react-router-dom';
 import { Guest } from './components/Guest';
 import { Private } from './components/Private';
+import { Signin2 } from './components/Signin2';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBQzMyPZ6eVB7YpV-l7rFvlUCs35ZkghjE',
@@ -18,15 +19,8 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-firebase.auth().onAuthStateChanged(onChangeHandler);
-
-function onChangeHandler(user: firebase.User | null) {
-  console.log('user:' + user);
-}
-
-function handleGoogleLogin() {
-  console.log(firebase.auth().currentUser);
-}
+// private pageに遷移した時に待ちが発生しないよう、ここで認証を走らせておく。そうするとprivateのpageが表示された直後にfirebase.auth().currentUserにアクセスできるようになる
+firebase.auth().onAuthStateChanged((user: firebase.User | null) => {});
 
 const App2 = () => {
   return (
@@ -35,17 +29,23 @@ const App2 = () => {
         <Route exact path="/">
           <Guest />
         </Route>
+        <Route path="/signin">
+          <Signin2 />
+        </Route>
         <Route path="/private">
           <Private />
         </Route>
       </Switch>
       <div>
-        <Button variant="contained" color="primary" onClick={handleGoogleLogin}>
-          Google login
+        <Button variant="contained" color="primary">
+          Button
         </Button>
       </div>
       <div>
         <Link to="/">To Top</Link>
+      </div>
+      <div>
+        <Link to="/signin">To Signin</Link>
       </div>
       <div>
         <Link to="/private">To Private</Link>
