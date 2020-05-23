@@ -85,7 +85,7 @@ function signOut() {
 
 function apiGet() {
   axios
-    .get('https://api-dot-docup-269111.appspot.com/api', {
+    .get('https://docup-endpoint-em2dgo5qcq-an.a.run.app/api', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token,
