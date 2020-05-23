@@ -36,11 +36,7 @@ const App2 = () => {
           <Private />
         </Route>
       </Switch>
-      <div>
-        <Button variant="contained" color="primary">
-          Button
-        </Button>
-      </div>
+      <div>-----------------------</div>
       <div>
         <Link to="/">To Top</Link>
       </div>

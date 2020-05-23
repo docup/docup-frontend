@@ -66,18 +66,6 @@ function checkAuth() {
   //alert(firebase.auth().currentUser?.displayName);
 }
 
-function signOut() {
-  firebase
-    .auth()
-    .signOut()
-    .then(function() {
-      alert('signout');
-    })
-    .catch(function(error) {
-      alert(error);
-    });
-}
-
 export const Signin2: React.FC = () => {
   {
     useEffect(() => {
@@ -96,9 +84,6 @@ export const Signin2: React.FC = () => {
         </Button>
         <Button variant="contained" color="primary" onClick={checkAuth}>
           Check auth
-        </Button>
-        <Button variant="contained" color="primary" onClick={signOut}>
-          Sign out
         </Button>
       </div>
     );
