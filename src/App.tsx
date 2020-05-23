@@ -2,8 +2,8 @@ import React from 'react';
 import './App.css';
 //import TopPageContainer from './containers/TopPageContainer';
 import SignUpContainer from './containers/SignUpContainer';
-//import { FirebaseAuth, setGoogleAuthProvider } from './components/FirebaseAuth';
-import { Site, setGoogleAuthProvider } from './components/Site';
+import { FirebaseAuth, setGoogleAuthProvider } from './components/FirebaseAuth';
+import { Site } from './components/Site';
 import { MyPage } from './components/Mypage';
 import { SignIn } from './components/SignIn';
 import * as firebase from 'firebase';
@@ -28,9 +28,12 @@ firebase.auth().useDeviceLanguage();
 
 setGoogleAuthProvider(provider);
 
-var user = firebase.auth().currentUser;
-alert(user?.getIdToken());
-const isAuthenticated = user != null;
+// ここを切り替えることでmypageにアクセスした時にそのままmypageが表示されるか、/firebaseauthページに飛ばされるかコントロールできる。
+// この時点でfirebase.auth()を使ってログイン状態を判断したかったが、非同期処理なのか常にnullが返ってきてしまうので実現できずに終わっている(2020/05/23)
+const isAuthenticated = false;
+//var user = firebase.auth().currentUser;
+//alert(user?.getIdToken());
+//const isAuthenticated = user != null;
 
 const App = () => {
   return (
@@ -39,13 +42,14 @@ const App = () => {
         <div>
           <Route path="/" exact component={Site} />
           <Route path="/signin" exact component={SignIn} />
+          <Route path="/firebaseauth" exact component={FirebaseAuth} />
           <Route
             path="/mypage"
             render={props =>
               isAuthenticated ? (
                 <MyPage {...props} />
               ) : (
-                <Redirect to="/signin" />
+                <Redirect to="/firebaseauth" />
               )
             }
           />

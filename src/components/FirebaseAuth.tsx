@@ -4,7 +4,7 @@ import { TopPageHandler } from '../containers/TopPageContainer';
 import { RadioInput } from './RadioInput';
 import { ShowState } from './ShowState';
 import { SubmitButton } from './SubmitButton';
-import Button from '@material-ui/core/Button';
+import { Button, Box } from '@material-ui/core';
 import * as firebaseui from 'firebaseui';
 import * as firebase from 'firebase';
 import axios from 'axios';
@@ -85,8 +85,7 @@ function signOut() {
 
 function apiGet() {
   axios
-    //.get('https://api-dot-docup-269111.appspot.com/api', {
-    .get('http://localhost:8080/api', {
+    .get('https://api-dot-docup-269111.appspot.com/api', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token,
@@ -119,6 +118,9 @@ export class FirebaseAuth extends React.Component {
         <Button variant="contained" color="primary" onClick={apiGet}>
           API Get
         </Button>
+        <Box component="div" m={1}>
+          <a href="/">Go to site top</a>
+        </Box>
       </React.Fragment>
     );
   }
