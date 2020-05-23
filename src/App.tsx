@@ -2,8 +2,12 @@ import React from 'react';
 import './App.css';
 //import TopPageContainer from './containers/TopPageContainer';
 import SignUpContainer from './containers/SignUpContainer';
-import { FirebaseAuth, setGoogleAuthProvider } from './components/FirebaseAuth';
+//import { FirebaseAuth, setGoogleAuthProvider } from './components/FirebaseAuth';
+import { Site, setGoogleAuthProvider } from './components/Site';
+import { MyPage } from './components/Mypage';
+import { SignIn } from './components/SignIn';
 import * as firebase from 'firebase';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBQzMyPZ6eVB7YpV-l7rFvlUCs35ZkghjE',
@@ -24,10 +28,29 @@ firebase.auth().useDeviceLanguage();
 
 setGoogleAuthProvider(provider);
 
+var user = firebase.auth().currentUser;
+alert(user?.getIdToken());
+const isAuthenticated = user != null;
+
 const App = () => {
   return (
     <React.Fragment>
-      <FirebaseAuth />
+      <BrowserRouter>
+        <div>
+          <Route path="/" exact component={Site} />
+          <Route path="/signin" exact component={SignIn} />
+          <Route
+            path="/mypage"
+            render={props =>
+              isAuthenticated ? (
+                <MyPage {...props} />
+              ) : (
+                <Redirect to="/signin" />
+              )
+            }
+          />
+        </div>
+      </BrowserRouter>
     </React.Fragment>
   );
 };

@@ -4,6 +4,7 @@ import { TopPageHandler } from '../containers/TopPageContainer';
 import { RadioInput } from './RadioInput';
 import { ShowState } from './ShowState';
 import { SubmitButton } from './SubmitButton';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import * as firebaseui from 'firebaseui';
 import * as firebase from 'firebase';
@@ -100,25 +101,40 @@ function apiGet() {
     });
 }
 
-export class FirebaseAuth extends React.Component {
+function handleCallPublicAPI() {
+  axios
+    //.get('https://api-dot-docup-269111.appspot.com/guest', {
+    .get('http://localhost:8080/guest', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(response => {
+      alert(JSON.stringify(response.data));
+    })
+    .catch(error => {
+      alert(error);
+    });
+}
+
+export class Site extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Button variant="contained" color="primary" onClick={handleEmailLogin}>
-          Email login
+        <Box component="div" m={1}>
+          Public Page (Site top2)
+        </Box>
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCallPublicAPI}
+        >
+          Call Public API
         </Button>
-        <Button variant="contained" color="primary" onClick={handleGoogleLogin}>
-          Google login
-        </Button>
-        <Button variant="contained" color="primary" onClick={checkAuth}>
-          Check auth
-        </Button>
-        <Button variant="contained" color="primary" onClick={signOut}>
-          Sign out
-        </Button>
-        <Button variant="contained" color="primary" onClick={apiGet}>
-          API Get
-        </Button>
+        <Box component="div" m={1}>
+          <a href="mypage">Go to mypage</a>
+        </Box>
       </React.Fragment>
     );
   }

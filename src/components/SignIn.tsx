@@ -4,6 +4,7 @@ import { TopPageHandler } from '../containers/TopPageContainer';
 import { RadioInput } from './RadioInput';
 import { ShowState } from './ShowState';
 import { SubmitButton } from './SubmitButton';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import * as firebaseui from 'firebaseui';
 import * as firebase from 'firebase';
@@ -31,6 +32,10 @@ var provider: firebase.auth.GoogleAuthProvider;
 export function setGoogleAuthProvider(p: firebase.auth.GoogleAuthProvider) {
   provider = p;
 }
+var p: firebase.auth.GoogleAuthProvider = new firebase.auth.GoogleAuthProvider();
+p.addScope('https://www.googleapis.com/auth/contacts.readonly');
+setGoogleAuthProvider(p);
+
 function handleGoogleLogin() {
   firebase
     .auth()
@@ -83,27 +88,37 @@ function signOut() {
     });
 }
 
-function apiGet() {
+function handleCallPublicAPI() {
   axios
-    //.get('https://api-dot-docup-269111.appspot.com/api', {
-    .get('http://localhost:8080/api', {
+    //.get('https://api-dot-docup-269111.appspot.com/guest', {
+    .get('http://localhost:8080/guest', {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
       },
     })
     .then(response => {
-      alert(response.data);
+      alert(JSON.stringify(response.data));
     })
     .catch(error => {
       alert(error);
     });
 }
 
-export class FirebaseAuth extends React.Component {
+export class SignIn extends React.Component {
   render() {
     return (
       <React.Fragment>
+        <Box component="div" m={1}>
+          Sign In
+        </Box>
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCallPublicAPI}
+        >
+          Call API with Auth
+        </Button>
         <Button variant="contained" color="primary" onClick={handleEmailLogin}>
           Email login
         </Button>
@@ -116,9 +131,9 @@ export class FirebaseAuth extends React.Component {
         <Button variant="contained" color="primary" onClick={signOut}>
           Sign out
         </Button>
-        <Button variant="contained" color="primary" onClick={apiGet}>
-          API Get
-        </Button>
+        <Box component="div" m={1}>
+          <a href="/">Go to site top</a>
+        </Box>
       </React.Fragment>
     );
   }
