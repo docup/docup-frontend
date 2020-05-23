@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import { Route, Redirect } from 'react-router-dom';
 import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 import { Button, Box } from '@material-ui/core';
+import axios from 'axios';
 
 function signOut() {
   firebase
@@ -20,6 +21,7 @@ export const Private: React.FC = () => {
   {
     const [authDone, setAuthDone] = useState<boolean>(false);
     const [userValue, setUserValue] = useState<any>(null);
+    const [messageFromAPI, setMessageFromAPI] = useState<string>('');
 
     useEffect(() => {
       var done = false;
@@ -34,6 +36,33 @@ export const Private: React.FC = () => {
         done = true;
       };
     });
+
+    var callPrivateAPI = () => {
+      firebase
+        .auth()
+        .currentUser?.getIdToken()
+        .then(jwtToken => {
+          var token = jwtToken;
+          axios
+            // .get('https://api-dot-docup-269111.appspot.com/private', {
+            .get('http://localhost:8080/private', {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+              },
+            })
+            .then(response => {
+              alert(response.data);
+              setMessageFromAPI(response.data['message']);
+            })
+            .catch(error => {
+              alert(error);
+            });
+        })
+        .catch(error => {
+          alert(error);
+        });
+    };
 
     console.log('user at private:' + firebase.auth().currentUser);
     console.log('setAuthDone:' + authDone);
@@ -53,6 +82,10 @@ export const Private: React.FC = () => {
         <Button variant="contained" color="primary" onClick={signOut}>
           Sign out
         </Button>
+        <Button variant="contained" color="primary" onClick={callPrivateAPI}>
+          Call private API
+        </Button>
+        <div>Message from private API:{messageFromAPI}</div>
       </div>
     );
   }
