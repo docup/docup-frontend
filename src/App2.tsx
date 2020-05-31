@@ -22,6 +22,41 @@ firebase.initializeApp(firebaseConfig);
 // private pageに遷移した時に待ちが発生しないよう、ここで認証を走らせておく。そうするとprivateのpageが表示された直後にfirebase.auth().currentUserにアクセスできるようになる
 firebase.auth().onAuthStateChanged((user: firebase.User | null) => {});
 
+export const db = firebase.firestore();
+
+function postform() {
+  db.collection('contact')
+    .add({
+      email: 'tanaka@docup.jp',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .then(function() {
+      console.log('Document written with ID: ');
+      alert('ok');
+    })
+    .catch(function(error) {
+      console.error('Error adding document: ', error);
+    });
+}
+
+function readform() {
+  db.collection('form')
+    .doc('tanaka@docup.jp')
+    .get()
+    .then(function(doc) {
+      if (doc.exists) {
+        alert('ok');
+        console.log('Document data:', doc.data());
+      } else {
+        // doc.data() will be undefined in this case
+        console.log('No such document!');
+      }
+    })
+    .catch(function(error) {
+      console.log('Error getting document:', error);
+    });
+}
+
 const App2 = () => {
   return (
     <BrowserRouter>
@@ -37,6 +72,18 @@ const App2 = () => {
         </Route>
       </Switch>
       <div>-----------------------</div>
+      <div>
+        <Button variant="contained" color="primary" onClick={postform}>
+          Post form
+        </Button>
+      </div>
+      <Box m={2} />
+      <div>
+        <Button variant="contained" color="primary" onClick={readform}>
+          Read form
+        </Button>
+      </div>
+      <Box m={4} />
       <div>
         <Link to="/">To Top</Link>
       </div>
