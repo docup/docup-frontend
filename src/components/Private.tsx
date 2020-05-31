@@ -45,7 +45,7 @@ export const Private: React.FC = () => {
           var token = jwtToken;
           axios
             // .get('https://api-dot-docup-269111.appspot.com/private', {
-            .get('http://localhost:8080/private', {
+            .get(process.env.REACT_APP_API_HOST + '/api/private', {
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + token,

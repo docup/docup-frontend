@@ -87,7 +87,7 @@ function signOut() {
 function apiGet() {
   axios
     //.get('https://api-dot-docup-269111.appspot.com/api', {
-    .get('http://localhost:8080/api', {
+    .get(process.env.REACT_APP_API_HOST + '/api', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token,
@@ -104,7 +104,7 @@ function apiGet() {
 function handleCallPublicAPI() {
   axios
     //.get('https://api-dot-docup-269111.appspot.com/guest', {
-    .get('http://localhost:8080/guest', {
+    .get(process.env.REACT_APP_API_HOST + '/api/guest', {
       headers: {
         'Content-Type': 'application/json',
       },
