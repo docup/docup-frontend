@@ -91,7 +91,7 @@ function signOut() {
 function handleCallPublicAPI() {
   axios
     //.get('https://api-dot-docup-269111.appspot.com/guest', {
-    .get(process.env.REACT_APP_API_HOST + '/api/guest', {
+    .get(process.env.REACT_APP_API_HOST + '/api/v1/guest', {
       headers: {
         'Content-Type': 'application/json',
       },
