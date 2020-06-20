@@ -12,6 +12,15 @@ npm install
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Deploy
+
+デプロイは docup-backend から行う。
+
+```sh
+cd ../docup-backend
+make appengine/dev/deploy
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
