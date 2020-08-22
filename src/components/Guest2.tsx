@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'space-around',
       overflow: 'hidden',
       //backgroundColor: theme.palette.background.paper,
-      background: '#F3F3F3',
+      background: '#333333',
     },
     appbar: {
       marginBottom: '30px',
@@ -118,6 +118,7 @@ const tileData = [
       'https://manimani-korea.net/wp-content/uploads/2016/07/DD7FC820-1969-47CE-9F9D-A2C701DEDA3F.jpeg',
     cols: 1.5,
     title: 'YUMI',
+    rating: 5,
     description:
       '清楚な佇まいで見るからに優しさがにじみ出ている美人さん。見た目通りの優しい笑顔と穏やかな性格で、癒し度120％。その存在が、貴方の心と身体を優しく包み込んでくれることでしょう',
   },
@@ -126,6 +127,7 @@ const tileData = [
       'https://www.goabroadfromjapan.com/wp-content/uploads/2018/07/Screen-Shot-2018-07-15-at-18.35.02.png',
     cols: 1.5,
     title: 'AKI',
+    rating: 5,
     description:
       '清楚な佇まいで見るからに優しさがにじみ出ている美人さん。見た目通りの優しい笑顔と穏やかな性格で、癒し度120％。その存在が、貴方の心と身体を優しく包み込んでくれることでしょう',
   },
@@ -133,13 +135,15 @@ const tileData = [
     img: 'https://www.instagram.com/p/BP2V0IpAT2s/media?size=l',
     cols: 3,
     title: 'MINA',
+    rating: 5,
     description:
       '清楚な佇まいで見るからに優しさがにじみ出ている美人さん。見た目通りの優しい笑顔と穏やかな性格で、癒し度120％。その存在が、貴方の心と身体を優しく包み込んでくれることでしょう',
   },
   {
     img: 'https://www.instagram.com/p/Bjj2IgAnNiB/media/?size=l',
     cols: 1,
-    title: 'YUMI',
+    title: 'RIN',
+    rating: 4,
     description:
       '清楚な佇まいで見るからに優しさがにじみ出ている美人さん。見た目通りの優しい笑顔と穏やかな性格で、癒し度120％。その存在が、貴方の心と身体を優しく包み込んでくれることでしょう',
   },
@@ -147,7 +151,8 @@ const tileData = [
     img:
       'https://i.pinimg.com/originals/1a/9c/f1/1a9cf108c039d28980fe5dbdaa5575ab.png',
     cols: 1,
-    title: 'AKI',
+    title: 'MOMOE',
+    rating: 4,
     description:
       '清楚な佇まいで見るからに優しさがにじみ出ている美人さん。見た目通りの優しい笑顔と穏やかな性格で、癒し度120％。その存在が、貴方の心と身体を優しく包み込んでくれることでしょう',
   },
@@ -155,7 +160,8 @@ const tileData = [
     img:
       'https://image.space.rakuten.co.jp/d/strg/ctrl/9/0ca96f5b6b8dcdf79ca231ca719e7731d98fcc1a.42.2.9.2.jpeg',
     cols: 1,
-    title: 'YUMI',
+    title: 'RIKU',
+    rating: 4,
     description:
       '清楚な佇まいで見るからに優しさがにじみ出ている美人さん。見た目通りの優しい笑顔と穏やかな性格で、癒し度120％。その存在が、貴方の心と身体を優しく包み込んでくれることでしょう',
   },
@@ -214,7 +220,7 @@ const Guest2: React.FC<Props> = ({ text }) => {
                       </Typography>
                       <StyledRating
                         name="customized-color"
-                        defaultValue={2}
+                        defaultValue={tile.rating}
                         getLabelText={(value: number) =>
                           `${value} Heart${value !== 1 ? 's' : ''}`
                         }
