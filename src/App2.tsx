@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import { Box, Button } from '@material-ui/core';
 import { BrowserRouter, Route, Redirect, Link, Switch } from 'react-router-dom';
 import { Guest } from './components/Guest';
+import Guest2 from './components/Guest2';
 import { Private } from './components/Private';
 import { Signin2 } from './components/Signin2';
 
@@ -62,7 +63,7 @@ const App2 = () => {
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <Guest />
+          <Guest2 text={'hoge'} />
         </Route>
         <Route path="/signin">
           <Signin2 />
@@ -71,28 +72,6 @@ const App2 = () => {
           <Private />
         </Route>
       </Switch>
-      <div>-----------------------</div>
-      {/* <div>
-        <Button variant="contained" color="primary" onClick={postform}>
-          Post form
-        </Button>
-      </div>
-      <Box m={2} />
-      <div>
-        <Button variant="contained" color="primary" onClick={readform}>
-          Read form
-        </Button>
-      </div> */}
-      <Box m={4} />
-      <div>
-        <Link to="/">To Top</Link>
-      </div>
-      <div>
-        <Link to="/signin">To Signin</Link>
-      </div>
-      <div>
-        <Link to="/private">To MyPage</Link>
-      </div>
     </BrowserRouter>
   );
 };
