@@ -4,6 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 import { Button, Box } from '@material-ui/core';
 import axios from 'axios';
+import { db } from '../App2';
 
 function signOut() {
   firebase
@@ -14,6 +15,52 @@ function signOut() {
     })
     .catch(function(error) {
       alert(error);
+    });
+}
+
+function setUserInfo() {
+  if (firebase.auth().currentUser == null) {
+    alert('not logined');
+    return;
+  }
+  let uid = firebase.auth().currentUser?.uid;
+
+  db.collection('users')
+    .doc(uid)
+    .set({
+      email: 'tanaka@docup.jp',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .then(function() {
+      console.log('Document written with ID: ');
+      alert('ok');
+    })
+    .catch(function(error) {
+      console.error('Error adding document: ', error);
+    });
+}
+
+function readUserInfo() {
+  if (firebase.auth().currentUser == null) {
+    alert('not logined');
+    return;
+  }
+  let uid = firebase.auth().currentUser?.uid;
+
+  db.collection('users')
+    .doc(uid)
+    .get()
+    .then(function(doc) {
+      if (doc.exists) {
+        alert('ok:' + doc.data());
+        console.log('Document data:', doc.data());
+      } else {
+        // doc.data() will be undefined in this case
+        console.log('No such document!');
+      }
+    })
+    .catch(function(error) {
+      console.log('Error getting document:', error);
     });
 }
 
@@ -78,14 +125,26 @@ export const Private: React.FC = () => {
     var user = userValue as firebase.User;
     return (
       <div>
-        <div>Private PAGE {user.displayName}</div>
+        <div>MyPage {user.displayName}</div>
+        <Box m={3} />
         <Button variant="contained" color="primary" onClick={signOut}>
           Sign out
         </Button>
+        <Box m={3} />
+        <div>Call private API</div>
         <Button variant="contained" color="primary" onClick={callPrivateAPI}>
           Call private API
         </Button>
         <div>Message from private API:{messageFromAPI}</div>
+        <Box m={3} />
+
+        <div>Operate firestore from client(frontend) directory</div>
+        <Button variant="contained" color="primary" onClick={setUserInfo}>
+          Update user info
+        </Button>
+        <Button variant="contained" color="primary" onClick={readUserInfo}>
+          Read user info
+        </Button>
       </div>
     );
   }

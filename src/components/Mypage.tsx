@@ -41,6 +41,7 @@ export class MyPage extends React.Component {
         >
           Call API with Auth
         </Button>
+
         <Box component="div" m={1}>
           <a href="/">Go to site top</a>
         </Box>

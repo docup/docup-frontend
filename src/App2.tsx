@@ -45,7 +45,6 @@ function readform() {
     .get()
     .then(function(doc) {
       if (doc.exists) {
-        alert('ok');
         console.log('Document data:', doc.data());
       } else {
         // doc.data() will be undefined in this case
@@ -53,6 +52,7 @@ function readform() {
       }
     })
     .catch(function(error) {
+      alert(error);
       console.log('Error getting document:', error);
     });
 }
@@ -72,7 +72,7 @@ const App2 = () => {
         </Route>
       </Switch>
       <div>-----------------------</div>
-      <div>
+      {/* <div>
         <Button variant="contained" color="primary" onClick={postform}>
           Post form
         </Button>
@@ -82,7 +82,7 @@ const App2 = () => {
         <Button variant="contained" color="primary" onClick={readform}>
           Read form
         </Button>
-      </div>
+      </div> */}
       <Box m={4} />
       <div>
         <Link to="/">To Top</Link>
@@ -91,7 +91,7 @@ const App2 = () => {
         <Link to="/signin">To Signin</Link>
       </div>
       <div>
-        <Link to="/private">To Private</Link>
+        <Link to="/private">To MyPage</Link>
       </div>
     </BrowserRouter>
   );

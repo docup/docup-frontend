@@ -17,7 +17,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 デプロイは docup-backend から行う。
 
 ```sh
-cd ../docup-backend
+cd ../docup-api
 make appengine/dev/deploy
 ```
 
