@@ -92,8 +92,6 @@ var actionCodeSettings = {
   handleCodeInApp: true,
 };
 
-var recaptchaVerifier: any;
-
 const SignUpPhoneNumber: React.FC<Props> = ({}) => {
   const classes = useStyles();
 
@@ -102,22 +100,27 @@ const SignUpPhoneNumber: React.FC<Props> = ({}) => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [slideIndex, setSlideIndex] = React.useState(0);
   const [errorText, setErrorText] = React.useState('');
+  const [
+    recaptchaVerifier,
+    setRecaptchaVerifier,
+  ] = React.useState<firebase.auth.RecaptchaVerifier | null>(null);
+  const [
+    confirmationResult,
+    setConfirmationResult,
+  ] = useState<firebase.auth.ConfirmationResult | null>(null);
   const steps = ['電話番号を入力してください', '確認コードを入力してください'];
-
-  var confirmationResult: firebase.auth.ConfirmationResult;
 
   const handleSignUp = () => {
     const reTel = /^\+819[0-9].+$/i; //携帯電話
-    if (reTel.test(tel)) {
+    if (reTel.test(tel) && recaptchaVerifier) {
       setErrorText('');
-
       firebase
         .auth()
         .signInWithPhoneNumber(tel, recaptchaVerifier)
         .then(function(result) {
           // SMS sent. Prompt user to type the code from the message, then sign the
           // user in with confirmationResult.confirm(code).
-          confirmationResult = result;
+          setConfirmationResult(result);
           setActiveStep(prevActiveStep => prevActiveStep + 1);
         })
         .catch(function(error) {
@@ -133,6 +136,10 @@ const SignUpPhoneNumber: React.FC<Props> = ({}) => {
   };
 
   const handleConfirmation = () => {
+    if (confirmationResult == null) {
+      console.error('confirmationResult is null');
+      return;
+    }
     confirmationResult
       .confirm(confirmationCode)
       .then(function(result) {
@@ -162,13 +169,14 @@ const SignUpPhoneNumber: React.FC<Props> = ({}) => {
     }, []);
 
   useDidMount(() => {
-    recaptchaVerifier = new firebase.auth.RecaptchaVerifier('submitButton', {
+    const verifier = new firebase.auth.RecaptchaVerifier('submitButton', {
       size: 'invisible',
       callback: function(response: any) {
         // reCAPTCHA solved, allow signInWithPhoneNumber.
       },
     });
-    recaptchaVerifier.render().then(function(widgetId: any) {});
+    setRecaptchaVerifier(verifier);
+    verifier.render().then(function(widgetId: any) {});
   });
 
   return (
