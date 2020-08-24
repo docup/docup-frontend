@@ -152,17 +152,6 @@ const SignUpPhoneNumber: React.FC<Props> = ({}) => {
       });
   };
 
-  // useEffect(() => {
-  //   const unsubscribe = firebase
-  //     .auth()
-  //     .onAuthStateChanged((user: firebase.User | null) => {
-  //       if (user != null && activeStep == 1) {
-  //         window.location.replace('/');
-  //       }
-  //     });
-  //   return () => unsubscribe();
-  // });
-
   const useDidMount = (func: Function) =>
     useEffect(() => {
       return func();

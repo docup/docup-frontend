@@ -212,6 +212,22 @@ const SignIn3: React.FC<Props> = ({}) => {
                   新規登録
                 </Button>
                 <Box m={3} />
+                <Divider />
+                <Box m={3} />
+                <Typography className={classes.typography} color="secondary">
+                  または
+                </Typography>
+                <Box m={1} />
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => {
+                    window.location.href = '/signup-phone';
+                  }}
+                >
+                  電話番号で新規登録
+                </Button>
               </Paper>
             </Slide>
           )}

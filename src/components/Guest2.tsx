@@ -287,7 +287,7 @@ const Guest2: React.FC<Props> = ({ text }) => {
               <Button onClick={handleOpenMenu}>
                 <Avatar
                   alt="K.Yasuraoka"
-                  src={`${process.env.PUBLIC_URL}/images/2.jpg`}
+                  src={`${process.env.PUBLIC_URL}/images/usericon.png`}
                 />
               </Button>
             )}
