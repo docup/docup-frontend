@@ -25,6 +25,7 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
+  Avatar,
   Menu,
   MenuItem,
 } from '@material-ui/core';
@@ -40,6 +41,8 @@ import {
 } from '@material-ui/core/styles';
 import { customTheme } from '../theme';
 import SignIn3 from './SignIn3';
+import * as firebase from 'firebase';
+import { FirebaseAuth } from './FirebaseAuth';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -191,9 +194,24 @@ const Guest2: React.FC<Props> = ({ text }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [openLeftSideMenu, setOpenLeftSideMenu] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [currentUser, setCurrentUser] = useState<firebase.User | null>(
+    firebase.auth().currentUser
+  );
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const signOut = () => {
+    firebase
+      .auth()
+      .signOut()
+      .catch(error => {
+        console.log(error);
+      })
+      .finally(() => {
+        setCurrentUser(firebase.auth().currentUser);
+      });
   };
 
   return (
@@ -228,14 +246,23 @@ const Guest2: React.FC<Props> = ({ text }) => {
                 inputProps={{ 'aria-label': 'search' }}
               />
             </div>
-            <Button
-              color="inherit"
-              onClick={() => {
-                setOpenDialog(true);
-              }}
-            >
-              Login
-            </Button>
+            {currentUser == null ? (
+              <Button
+                color="inherit"
+                onClick={() => {
+                  setOpenDialog(true);
+                }}
+              >
+                Login
+              </Button>
+            ) : (
+              <Button onClick={handleOpenMenu}>
+                <Avatar
+                  alt="K.Yasuraoka"
+                  src={`${process.env.PUBLIC_URL}/images/2.jpg`}
+                />
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
         <Container maxWidth="md">
@@ -326,21 +353,22 @@ const Guest2: React.FC<Props> = ({ text }) => {
             setAnchorEl(null);
           }}
         >
-          Profile
+          プロフィール
         </MenuItem>
         <MenuItem
           onClick={() => {
             setAnchorEl(null);
           }}
         >
-          My account
+          マイアカウント
         </MenuItem>
         <MenuItem
           onClick={() => {
             setAnchorEl(null);
+            signOut();
           }}
         >
-          Logout
+          ログアウト
         </MenuItem>
       </Menu>
       <SwipeableDrawer

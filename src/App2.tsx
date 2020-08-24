@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import * as firebase from 'firebase';
 import { Box, Button } from '@material-ui/core';
 import { BrowserRouter, Route, Redirect, Link, Switch } from 'react-router-dom';
@@ -20,9 +20,6 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
-// private pageに遷移した時に待ちが発生しないよう、ここで認証を走らせておく。そうするとprivateのpageが表示された直後にfirebase.auth().currentUserにアクセスできるようになる
-firebase.auth().onAuthStateChanged((user: firebase.User | null) => {});
 
 export const db = firebase.firestore();
 
@@ -59,22 +56,39 @@ function readform() {
     });
 }
 
-const App2 = () => {
-  return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/">
-          <Guest2 text={'hoge'} />
-        </Route>
-        <Route path="/signin">
-          <SignIn3 />
-        </Route>
-        <Route path="/private">
-          <Private />
-        </Route>
-      </Switch>
-    </BrowserRouter>
-  );
+const App2: React.FC = () => {
+  const useDidMount = (func: Function) =>
+    useEffect(() => {
+      func();
+    }, []);
+
+  const [authChecked, setAuthCheched] = useState(false);
+
+  useDidMount(() => {
+    firebase.auth().onAuthStateChanged((user: firebase.User | null) => {
+      setAuthCheched(true);
+    });
+  });
+
+  if (authChecked) {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/">
+            <Guest2 text={'hoge'} />
+          </Route>
+          <Route path="/signin">
+            <SignIn3 />
+          </Route>
+          <Route path="/private">
+            <Private />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    );
+  } else {
+    return <div></div>;
+  }
 };
 
 export default App2;
