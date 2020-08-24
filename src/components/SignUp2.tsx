@@ -78,37 +78,38 @@ type Props = {
   //onSignIn: (token: any, user: any) => void;
 };
 
-const authProvider = new firebase.auth.GoogleAuthProvider();
-authProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+var actionCodeSettings = {
+  // URL you want to redirect back to. The domain (www.example.com) for this
+  // URL must be whitelisted in the Firebase Console.
+  url: 'http://localhost:3000/signinwithemaillink',
+  // This must be true.
+  handleCodeInApp: true,
+};
 
 const SignIn3: React.FC<Props> = ({}) => {
   const classes = useStyles();
 
-  // const useDidMount = (func: Function) =>
-  //   useEffect(() => {
-  //     func();
-  //   }, []);
+  const [email, setEmail] = useState('');
 
-  // useDidMount(() => {
-  //   var p: firebase.auth.GoogleAuthProvider = new firebase.auth.GoogleAuthProvider();
-  //   p.addScope('https://www.googleapis.com/auth/contacts.readonly');
-  // });
-
-  const handleGoogleLogin = () => {
+  const handleSignUp = () => {
     firebase
       .auth()
-      .signInWithRedirect(authProvider)
-      .then(function(result: any) {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = result.credential.accessToken;
-        // The signed-in user info.
-        var user = result.user;
-        // ...
-        //onSignIn(token, user);
+      .sendSignInLinkToEmail(email, actionCodeSettings)
+      .then(function() {
+        console.log('The link was successfully sent');
+        // The link was successfully sent. Inform the user.
+        // Save the email locally so you don't need to ask the user for it again
+        // if they open the link on the same device.
+        window.localStorage.setItem('emailForSignIn', email);
       })
       .catch(function(error) {
+        // Some error occurred, you can inspect the code: error.code
         console.error(error);
       });
+  };
+
+  const emailOnChange = (event: any) => {
+    setEmail(event.target.value);
   };
 
   return (
@@ -129,46 +130,16 @@ const SignIn3: React.FC<Props> = ({}) => {
             className={classes.textField}
             id="outlined-required"
             label="Email"
-            defaultValue=""
+            value={email}
             variant="outlined"
-          />
-          <Box m={3} />
-          <TextField
-            required
-            type="password"
-            className={classes.textField}
-            id="outlined-required"
-            label="Password"
-            defaultValue=""
-            variant="outlined"
+            onChange={emailOnChange}
           />
           <Box m={3} />
           <Button
             className={classes.button}
             variant="contained"
             color="primary"
-          >
-            ログイン
-          </Button>
-          <Box m={3} />
-          <Divider />
-          <Box m={3} />
-          <GoogleButton
-            className={classes.googleSignInButton}
-            onClick={() => {
-              handleGoogleLogin();
-            }}
-          />
-          <Box m={3} />
-          <Divider />
-          <Box m={3} />
-          <Typography className={classes.typography}>
-            はじめての方はこちら
-          </Typography>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="default"
+            onClick={handleSignUp}
           >
             新規登録
           </Button>

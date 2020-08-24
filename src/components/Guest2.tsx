@@ -377,6 +377,7 @@ const Guest2: React.FC<Props> = ({ text }) => {
           setAnchorEl(null);
         }}
       >
+        <MenuItem disabled={true}>{currentUser?.email}</MenuItem>
         <MenuItem
           onClick={() => {
             setAnchorEl(null);
