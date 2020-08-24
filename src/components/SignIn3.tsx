@@ -115,56 +115,56 @@ const SignIn3: React.FC<Props> = ({}) => {
     <MuiThemeProvider theme={customTheme}>
       <div className={classes.root}>
         <Container maxWidth="md">
-          <Paper elevation={1} className={classes.paper}>
-            <TextField
-              required
-              className={classes.textField}
-              id="outlined-required"
-              label="Email"
-              defaultValue=""
-              variant="outlined"
-            />
-            <Box m={3} />
-            <TextField
-              required
-              type="password"
-              className={classes.textField}
-              id="outlined-required"
-              label="Password"
-              defaultValue=""
-              variant="outlined"
-            />
-            <Box m={3} />
-            <Button
-              className={classes.button}
-              variant="contained"
-              color="primary"
-            >
-              ログイン
-            </Button>
-            <Box m={3} />
-            <Divider />
-            <Box m={3} />
-            <GoogleButton
-              className={classes.googleSignInButton}
-              onClick={() => {
-                handleGoogleLogin();
-              }}
-            />
-            <Box m={3} />
-            <Divider />
-            <Box m={3} />
-            <Typography className={classes.typography}>
-              はじめての方はこちら
-            </Typography>
-            <Button
-              className={classes.button}
-              variant="contained"
-              color="default"
-            >
-              新規登録
-            </Button>
-          </Paper>
+          <Box m={3} />
+          <TextField
+            required
+            className={classes.textField}
+            id="outlined-required"
+            label="Email"
+            defaultValue=""
+            variant="outlined"
+          />
+          <Box m={3} />
+          <TextField
+            required
+            type="password"
+            className={classes.textField}
+            id="outlined-required"
+            label="Password"
+            defaultValue=""
+            variant="outlined"
+          />
+          <Box m={3} />
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="primary"
+          >
+            ログイン
+          </Button>
+          <Box m={3} />
+          <Divider />
+          <Box m={3} />
+          <GoogleButton
+            className={classes.googleSignInButton}
+            onClick={() => {
+              handleGoogleLogin();
+            }}
+          />
+          <Box m={3} />
+          <Divider />
+          <Box m={3} />
+          <Typography className={classes.typography}>
+            はじめての方はこちら
+          </Typography>
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="default"
+          >
+            新規登録
+          </Button>
+          <Box m={3} />
         </Container>
       </div>
     </MuiThemeProvider>

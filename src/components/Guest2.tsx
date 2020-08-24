@@ -354,6 +354,7 @@ const Guest2: React.FC<Props> = ({ text }) => {
         }}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
+        scroll="body"
       >
         <SignIn3 />
         <DialogActions>
