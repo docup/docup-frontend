@@ -281,7 +281,7 @@ const Guest2: React.FC<Props> = ({ text }) => {
                   setOpenDialog(true);
                 }}
               >
-                Login
+                サインイン
               </Button>
             ) : (
               <Button onClick={handleOpenMenu}>
@@ -398,7 +398,7 @@ const Guest2: React.FC<Props> = ({ text }) => {
             signOut();
           }}
         >
-          ログアウト
+          サインアウト
         </MenuItem>
       </Menu>
       <SwipeableDrawer

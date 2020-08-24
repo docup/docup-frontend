@@ -31,6 +31,8 @@ import {
 import GoogleButton from 'react-google-button';
 import { customTheme } from '../theme';
 import * as firebase from 'firebase';
+import useReactRouter from 'use-react-router';
+import queryString from 'query-string';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,6 +52,8 @@ type Props = {};
 const SignInWithEmailLink: React.FC<Props> = ({}) => {
   const classes = useStyles();
 
+  const { history, location, match } = useReactRouter();
+
   useEffect(() => {
     // Confirm the link is a sign-in with email link.
     if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
@@ -58,34 +62,26 @@ const SignInWithEmailLink: React.FC<Props> = ({}) => {
       // the sign-in operation.
       // Get the email if available. This should be available if the user completes
       // the flow on the same device where they started it.
-      var email = window.localStorage.getItem('emailForSignIn');
-      if (!email) {
-        // User opened the link on a different device. To prevent session fixation
-        // attacks, ask the user to provide the associated email again. For example:
-        email = window.prompt('Please provide your email for confirmation');
+      const qs = queryString.parse(location.search);
+      var email = '';
+      if (typeof qs.email == 'string') {
+        email = qs.email;
       }
-      if (email) {
-        // The client SDK will parse the code from the link for you.
-        firebase
-          .auth()
-          .signInWithEmailLink(email, window.location.href)
-          .then(function(result) {
-            console.log('success signInWithEmailLink');
-            // Clear email from storage.
-            window.localStorage.removeItem('emailForSignIn');
-            // You can access the new user via result.user
-            // Additional user info profile not available via:
-            // result.additionalUserInfo.profile == null
-            // You can check if the user is new or existing:
-            // result.additionalUserInfo.isNewUser
-            window.location.replace('/');
-          })
-          .catch(function(error) {
-            // Some error occurred, you can inspect the code: error.code
-            // Common errors could be invalid email and invalid or expired OTPs.
-            console.error(error);
-          });
+      if (email == '') {
+        console.error('email not found');
+        return;
       }
+
+      // The client SDK will parse the code from the link for you.
+      firebase
+        .auth()
+        .signInWithEmailLink(email, window.location.href)
+        .then(function(result) {
+          window.location.replace('/');
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
     }
   });
 

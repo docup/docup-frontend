@@ -83,7 +83,7 @@ type Props = {
 var actionCodeSettings = {
   // URL you want to redirect back to. The domain (www.example.com) for this
   // URL must be whitelisted in the Firebase Console.
-  url: 'http://localhost:3000/signinwithemaillink',
+  url: 'http://c02c6157md6t.local:3000/signinwithemaillink',
   // This must be true.
   handleCodeInApp: true,
 };
@@ -245,7 +245,7 @@ const SignIn3: React.FC<Props> = ({}) => {
                 <Box m={3} />
                 <Typography className={classes.typography}>
                   {email}
-                  に認証リンクを送信しました。リンクをクリックしてログインを完了してください
+                  に認証リンクを送信しました。リンクをクリックしてサインインを完了してください
                 </Typography>
                 <Box m={3} />
               </Paper>

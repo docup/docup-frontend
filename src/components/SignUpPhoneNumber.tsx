@@ -87,7 +87,7 @@ type Props = {
 var actionCodeSettings = {
   // URL you want to redirect back to. The domain (www.example.com) for this
   // URL must be whitelisted in the Firebase Console.
-  url: 'http://localhost:3000/signinwithemaillink',
+  url: 'http://c02c6157md6t.local:3000/signinwithemaillink',
   // This must be true.
   handleCodeInApp: true,
 };
@@ -209,7 +209,7 @@ const SignUpPhoneNumber: React.FC<Props> = ({}) => {
                   className={classes.textField}
                   type="tel"
                   id="tel"
-                  label="電話番号"
+                  label="電話番号(testtel +819012345678)"
                   value={tel}
                   variant="outlined"
                   onChange={telOnChange}
@@ -252,7 +252,7 @@ const SignUpPhoneNumber: React.FC<Props> = ({}) => {
                       className={classes.textFieldConfirmCode}
                       type="number"
                       id="confirmation-code"
-                      label="6桁の確認コード"
+                      label="6桁の確認コード(testcode 123456)"
                       value={confirmationCode}
                       variant="outlined"
                       onChange={event => {
