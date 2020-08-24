@@ -28,6 +28,7 @@ import {
   makeStyles,
   MuiThemeProvider,
 } from '@material-ui/core/styles';
+import GoogleButton from 'react-google-button';
 import { customTheme } from '../theme';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -56,6 +57,9 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '80%',
       margin: 'auto',
       textAlign: 'center',
+    },
+    googleSignInButton: {
+      margin: 'auto',
     },
   })
 );
@@ -104,6 +108,15 @@ const SignIn3: React.FC<Props> = ({}) => {
             >
               ログイン
             </Button>
+            <Box m={3} />
+            <Divider />
+            <Box m={3} />
+            <GoogleButton
+              className={classes.googleSignInButton}
+              onClick={() => {
+                console.log('Google utton clicked');
+              }}
+            />
             <Box m={3} />
             <Divider />
             <Box m={3} />
