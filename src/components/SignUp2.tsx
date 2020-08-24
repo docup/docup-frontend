@@ -115,7 +115,7 @@ const SignIn3: React.FC<Props> = ({}) => {
   return (
     <MuiThemeProvider theme={customTheme}>
       <div className={classes.root}>
-        <Container maxWidth="md">
+        <Container maxWidth="sm">
           <Box m={3} />
           <Typography
             className={classes.typography}

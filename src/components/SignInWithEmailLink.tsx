@@ -78,7 +78,7 @@ const SignInWithEmailLink: React.FC<Props> = ({}) => {
             // result.additionalUserInfo.profile == null
             // You can check if the user is new or existing:
             // result.additionalUserInfo.isNewUser
-            window.location.href = '/';
+            window.location.replace('/');
           })
           .catch(function(error) {
             // Some error occurred, you can inspect the code: error.code

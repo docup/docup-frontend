@@ -114,7 +114,7 @@ const SignIn3: React.FC<Props> = ({}) => {
   return (
     <MuiThemeProvider theme={customTheme}>
       <div className={classes.root}>
-        <Container maxWidth="md">
+        <Container maxWidth="sm">
           <Box m={3} />
           <TextField
             required
@@ -161,6 +161,9 @@ const SignIn3: React.FC<Props> = ({}) => {
             className={classes.button}
             variant="contained"
             color="default"
+            onClick={() => {
+              window.location.href = '/signup';
+            }}
           >
             新規登録
           </Button>
