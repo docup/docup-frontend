@@ -94,24 +94,37 @@ const SignIn3: React.FC<Props> = ({}) => {
   const [email, setEmail] = useState('');
   const [activeStep, setActiveStep] = React.useState(0);
   const [slideIndex, setSlideIndex] = React.useState(0);
-  const steps = ['Emailを入力してください', '認証リンクを開いてください'];
+  const [errorText, setErrorText] = React.useState('');
+  const steps = [
+    'Emailまたは電話番号を入力してください',
+    '認証リンクを開いてください',
+  ];
 
   const handleSignUp = () => {
-    firebase
-      .auth()
-      .sendSignInLinkToEmail(email, actionCodeSettings)
-      .then(function() {
-        console.log('The link was successfully sent');
-        // The link was successfully sent. Inform the user.
-        // Save the email locally so you don't need to ask the user for it again
-        // if they open the link on the same device.
-        window.localStorage.setItem('emailForSignIn', email);
-        setActiveStep(prevActiveStep => prevActiveStep + 1);
-      })
-      .catch(function(error) {
-        // Some error occurred, you can inspect the code: error.code
-        console.error(error);
-      });
+    const re = /^.+@.+$/i;
+    const reTel = /^0[0-9].+$/i; //携帯電話
+    if (re.test(email)) {
+      setErrorText('');
+      firebase
+        .auth()
+        .sendSignInLinkToEmail(email, actionCodeSettings)
+        .then(function() {
+          console.log('The link was successfully sent');
+          // The link was successfully sent. Inform the user.
+          // Save the email locally so you don't need to ask the user for it again
+          // if they open the link on the same device.
+          window.localStorage.setItem('emailForSignIn', email);
+          setActiveStep(prevActiveStep => prevActiveStep + 1);
+        })
+        .catch(function(error) {
+          // Some error occurred, you can inspect the code: error.code
+          console.error(error);
+        });
+    } else if (reTel.test(email)) {
+      setErrorText('');
+    } else {
+      setErrorText('入力内容が正しくありません');
+    }
   };
 
   const emailOnChange = (event: any) => {
@@ -165,13 +178,15 @@ const SignIn3: React.FC<Props> = ({}) => {
                 </Typography>
                 <Box m={3} />
                 <TextField
+                  error={errorText != ''}
                   required
                   className={classes.textField}
                   id="outlined-required"
-                  label="Email"
+                  label="Emailまたは電話番号"
                   value={email}
                   variant="outlined"
                   onChange={emailOnChange}
+                  helperText={errorText}
                 />
                 <Box m={3} />
                 <Button

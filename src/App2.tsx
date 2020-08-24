@@ -22,6 +22,7 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+firebase.auth().useDeviceLanguage();
 
 export const db = firebase.firestore();
 
