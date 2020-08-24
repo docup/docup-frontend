@@ -19,8 +19,11 @@ import {
   Dialog,
   DialogActions,
   InputBase,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
-import { Menu, Favorite, Search } from '@material-ui/icons';
+import MenuIcon from '@material-ui/icons/Menu';
+import { Favorite, Search } from '@material-ui/icons';
 import {
   Theme,
   createStyles,
@@ -177,6 +180,11 @@ const Guest2: React.FC<Props> = ({ text }) => {
   const classes = useStyles();
 
   const [openDialog, setOpenDialog] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   return (
     <MuiThemeProvider theme={customTheme}>
@@ -188,8 +196,9 @@ const Guest2: React.FC<Props> = ({ text }) => {
               className={classes.menuButton}
               color="inherit"
               aria-label="menu"
+              onClick={handleOpenMenu}
             >
-              <Menu />
+              <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title} noWrap>
               Yasuraoka.com
@@ -291,6 +300,37 @@ const Guest2: React.FC<Props> = ({ text }) => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={() => {
+          setAnchorEl(null);
+        }}
+      >
+        <MenuItem
+          onClick={() => {
+            setAnchorEl(null);
+          }}
+        >
+          Profile
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setAnchorEl(null);
+          }}
+        >
+          My account
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setAnchorEl(null);
+          }}
+        >
+          Logout
+        </MenuItem>
+      </Menu>
     </MuiThemeProvider>
   );
 };
