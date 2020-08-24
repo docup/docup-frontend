@@ -66,6 +66,8 @@ const SignInWithEmailLink: React.FC<Props> = ({}) => {
       var email = '';
       if (typeof qs.email == 'string') {
         email = qs.email;
+      } else if (qs.email instanceof Array) {
+        email = qs.email[0];
       }
       if (email == '') {
         console.error('email not found');
