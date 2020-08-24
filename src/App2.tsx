@@ -6,6 +6,7 @@ import { Guest } from './components/Guest';
 import Guest2 from './components/Guest2';
 import { Private } from './components/Private';
 import { Signin2 } from './components/Signin2';
+import SignIn3 from './components/SignIn3';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBQzMyPZ6eVB7YpV-l7rFvlUCs35ZkghjE',
@@ -66,7 +67,7 @@ const App2 = () => {
           <Guest2 text={'hoge'} />
         </Route>
         <Route path="/signin">
-          <Signin2 />
+          <SignIn3 />
         </Route>
         <Route path="/private">
           <Private />
