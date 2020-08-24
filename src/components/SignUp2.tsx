@@ -99,10 +99,11 @@ const SignIn3: React.FC<Props> = ({}) => {
     'Emailまたは電話番号を入力してください',
     '認証リンクを開いてください',
   ];
+  var recaptchaVerifier: firebase.auth.ApplicationVerifier;
 
   const handleSignUp = () => {
     const re = /^.+@.+$/i;
-    const reTel = /^0[0-9].+$/i; //携帯電話
+    const reTel = /^\+819[0-9].+$/i; //携帯電話
     if (re.test(email)) {
       setErrorText('');
       firebase
@@ -122,6 +123,18 @@ const SignIn3: React.FC<Props> = ({}) => {
         });
     } else if (reTel.test(email)) {
       setErrorText('');
+
+      firebase
+        .auth()
+        .signInWithPhoneNumber(email, recaptchaVerifier)
+        .then(function(confirmationResult) {
+          // SMS sent. Prompt user to type the code from the message, then sign the
+          // user in with confirmationResult.confirm(code).
+          console.log(confirmationResult);
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
     } else {
       setErrorText('入力内容が正しくありません');
     }
@@ -142,9 +155,20 @@ const SignIn3: React.FC<Props> = ({}) => {
     return () => unsubscribe();
   });
 
+  useEffect(() => {
+    recaptchaVerifier = new firebase.auth.RecaptchaVerifier('submitButton', {
+      size: 'invisible',
+      callback: function(response: any) {
+        // reCAPTCHA solved, allow signInWithPhoneNumber.
+        //onSignInSubmit();
+        console.log(response);
+      },
+    });
+  });
+
   return (
     <MuiThemeProvider theme={customTheme}>
-      <div className={classes.root}>
+      <div className={classes.root} id="rootDiv">
         <Container maxWidth="sm">
           <Stepper activeStep={activeStep}>
             {steps.map((label, index) => {
@@ -190,6 +214,7 @@ const SignIn3: React.FC<Props> = ({}) => {
                 />
                 <Box m={3} />
                 <Button
+                  id="submitButton"
                   className={classes.button}
                   variant="contained"
                   color="primary"
