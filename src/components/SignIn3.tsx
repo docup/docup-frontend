@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { fade, withStyles } from '@material-ui/core/styles';
 import Rating from '@material-ui/lab/Rating';
 import {
@@ -30,6 +30,7 @@ import {
 } from '@material-ui/core/styles';
 import GoogleButton from 'react-google-button';
 import { customTheme } from '../theme';
+import * as firebase from 'firebase';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -73,10 +74,43 @@ const StyledRating = withStyles({
   },
 })(Rating);
 
-type Props = {};
+type Props = {
+  //onSignIn: (token: any, user: any) => void;
+};
+
+const authProvider = new firebase.auth.GoogleAuthProvider();
+authProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
 const SignIn3: React.FC<Props> = ({}) => {
   const classes = useStyles();
+
+  // const useDidMount = (func: Function) =>
+  //   useEffect(() => {
+  //     func();
+  //   }, []);
+
+  // useDidMount(() => {
+  //   var p: firebase.auth.GoogleAuthProvider = new firebase.auth.GoogleAuthProvider();
+  //   p.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  // });
+
+  const handleGoogleLogin = () => {
+    firebase
+      .auth()
+      .signInWithRedirect(authProvider)
+      .then(function(result: any) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+        // ...
+        //onSignIn(token, user);
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
+  };
+
   return (
     <MuiThemeProvider theme={customTheme}>
       <div className={classes.root}>
@@ -114,7 +148,7 @@ const SignIn3: React.FC<Props> = ({}) => {
             <GoogleButton
               className={classes.googleSignInButton}
               onClick={() => {
-                console.log('Google utton clicked');
+                handleGoogleLogin();
               }}
             />
             <Box m={3} />
