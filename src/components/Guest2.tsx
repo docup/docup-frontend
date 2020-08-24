@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { fade, withStyles } from '@material-ui/core/styles';
 import Rating from '@material-ui/lab/Rating';
 import {
@@ -17,6 +17,7 @@ import {
   Toolbar,
   IconButton,
   Dialog,
+  DialogActions,
   InputBase,
 } from '@material-ui/core';
 import { Menu, Favorite, Search } from '@material-ui/icons';
@@ -174,6 +175,9 @@ const tileData = [
 
 const Guest2: React.FC<Props> = ({ text }) => {
   const classes = useStyles();
+
+  const [openDialog, setOpenDialog] = useState(false);
+
   return (
     <MuiThemeProvider theme={customTheme}>
       <div className={classes.root}>
@@ -203,7 +207,14 @@ const Guest2: React.FC<Props> = ({ text }) => {
                 inputProps={{ 'aria-label': 'search' }}
               />
             </div>
-            <Button color="inherit">Login</Button>
+            <Button
+              color="inherit"
+              onClick={() => {
+                setOpenDialog(true);
+              }}
+            >
+              Login
+            </Button>
           </Toolbar>
         </AppBar>
         <Container maxWidth="md">
@@ -261,12 +272,24 @@ const Guest2: React.FC<Props> = ({ text }) => {
         className={classes.loginDialog}
         fullWidth={true}
         maxWidth="xl"
-        open={true}
-        onClose={() => {}}
+        open={openDialog}
+        onClose={() => {
+          setOpenDialog(false);
+        }}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
         <SignIn3 />
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setOpenDialog(false);
+            }}
+            color="primary"
+          >
+            Close
+          </Button>
+        </DialogActions>
       </Dialog>
     </MuiThemeProvider>
   );
