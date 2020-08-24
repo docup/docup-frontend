@@ -21,8 +21,10 @@ import {
   Paper,
   Stepper,
   Step,
+  StepContent,
   StepLabel,
   TextField,
+  Slide,
 } from '@material-ui/core';
 import { Menu, Favorite, Search } from '@material-ui/icons';
 import {
@@ -45,10 +47,10 @@ const useStyles = makeStyles((theme: Theme) =>
       //backgroundColor: theme.palette.background.paper,
       //background: '#F0F0F0',
     },
-    paper: {
+    paperConfirm: {
       background: '#F0F0F0',
-      margin: '3vw',
-      padding: '6vw',
+      margin: '1vw',
+      padding: '1vw',
     },
     textField: {
       width: '100%',
@@ -61,9 +63,6 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '80%',
       margin: 'auto',
       textAlign: 'center',
-    },
-    googleSignInButton: {
-      margin: 'auto',
     },
   })
 );
@@ -94,11 +93,8 @@ const SignIn3: React.FC<Props> = ({}) => {
 
   const [email, setEmail] = useState('');
   const [activeStep, setActiveStep] = React.useState(0);
-  const steps = [
-    'Select campaign settings',
-    'Create an ad group',
-    'Create an ad',
-  ];
+  const [slideIndex, setSlideIndex] = React.useState(0);
+  const steps = ['Emailを入力してください', '認証リンクを開いてください'];
 
   const handleSignUp = () => {
     firebase
@@ -110,6 +106,7 @@ const SignIn3: React.FC<Props> = ({}) => {
         // Save the email locally so you don't need to ask the user for it again
         // if they open the link on the same device.
         window.localStorage.setItem('emailForSignIn', email);
+        setActiveStep(prevActiveStep => prevActiveStep + 1);
       })
       .catch(function(error) {
         // Some error occurred, you can inspect the code: error.code
@@ -120,6 +117,17 @@ const SignIn3: React.FC<Props> = ({}) => {
   const emailOnChange = (event: any) => {
     setEmail(event.target.value);
   };
+
+  useEffect(() => {
+    const unsubscribe = firebase
+      .auth()
+      .onAuthStateChanged((user: firebase.User | null) => {
+        if (user != null && activeStep == 1) {
+          window.location.replace('/');
+        }
+      });
+    return () => unsubscribe();
+  });
 
   return (
     <MuiThemeProvider theme={customTheme}>
@@ -136,35 +144,68 @@ const SignIn3: React.FC<Props> = ({}) => {
               );
             })}
           </Stepper>
-
-          <Box m={3} />
-          <Typography
-            className={classes.typography}
-            variant="h4"
-            component="h5"
-          >
-            さあはじめましょう
-          </Typography>
-          <Box m={3} />
-          <TextField
-            required
-            className={classes.textField}
-            id="outlined-required"
-            label="Email"
-            value={email}
-            variant="outlined"
-            onChange={emailOnChange}
-          />
-          <Box m={3} />
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            onClick={handleSignUp}
-          >
-            新規登録
-          </Button>
-          <Box m={3} />
+          {activeStep == 0 && (
+            <Slide
+              direction="left"
+              in={true}
+              mountOnEnter
+              unmountOnExit
+              onExited={() => {
+                setSlideIndex(1);
+              }}
+            >
+              <Paper elevation={0}>
+                <Box m={3} />
+                <Typography
+                  className={classes.typography}
+                  variant="h4"
+                  component="h5"
+                >
+                  さあはじめましょう
+                </Typography>
+                <Box m={3} />
+                <TextField
+                  required
+                  className={classes.textField}
+                  id="outlined-required"
+                  label="Email"
+                  value={email}
+                  variant="outlined"
+                  onChange={emailOnChange}
+                />
+                <Box m={3} />
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSignUp}
+                >
+                  新規登録
+                </Button>
+                <Box m={3} />
+              </Paper>
+            </Slide>
+          )}
+          {activeStep == 1 && (
+            <Slide direction="left" in={true} mountOnEnter unmountOnExit>
+              <Paper elevation={2} className={classes.paperConfirm}>
+                <Box m={3} />
+                <Typography
+                  className={classes.typography}
+                  variant="h5"
+                  component="h6"
+                >
+                  認証リンクを送信しました
+                </Typography>
+                <Box m={3} />
+                <Typography className={classes.typography}>
+                  {email}
+                  に認証リンクを送信しました。リンクをクリックしてログインを完了してください
+                </Typography>
+                <Box m={3} />
+              </Paper>
+            </Slide>
+          )}
         </Container>
       </div>
     </MuiThemeProvider>

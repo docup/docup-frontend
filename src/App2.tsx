@@ -61,15 +61,18 @@ function readform() {
 const App2: React.FC = () => {
   const useDidMount = (func: Function) =>
     useEffect(() => {
-      func();
+      return func();
     }, []);
 
   const [authChecked, setAuthCheched] = useState(false);
 
   useDidMount(() => {
-    firebase.auth().onAuthStateChanged((user: firebase.User | null) => {
-      setAuthCheched(true);
-    });
+    const unsubscribe = firebase
+      .auth()
+      .onAuthStateChanged((user: firebase.User | null) => {
+        setAuthCheched(true);
+      });
+    return () => unsubscribe();
   });
 
   if (authChecked) {
