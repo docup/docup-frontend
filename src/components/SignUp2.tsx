@@ -19,6 +19,9 @@ import {
   InputBase,
   Divider,
   Paper,
+  Stepper,
+  Step,
+  StepLabel,
   TextField,
 } from '@material-ui/core';
 import { Menu, Favorite, Search } from '@material-ui/icons';
@@ -90,6 +93,12 @@ const SignIn3: React.FC<Props> = ({}) => {
   const classes = useStyles();
 
   const [email, setEmail] = useState('');
+  const [activeStep, setActiveStep] = React.useState(0);
+  const steps = [
+    'Select campaign settings',
+    'Create an ad group',
+    'Create an ad',
+  ];
 
   const handleSignUp = () => {
     firebase
@@ -116,6 +125,18 @@ const SignIn3: React.FC<Props> = ({}) => {
     <MuiThemeProvider theme={customTheme}>
       <div className={classes.root}>
         <Container maxWidth="sm">
+          <Stepper activeStep={activeStep}>
+            {steps.map((label, index) => {
+              const stepProps: { completed?: boolean } = {};
+              const labelProps: { optional?: React.ReactNode } = {};
+              return (
+                <Step key={label} {...stepProps}>
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
+
           <Box m={3} />
           <Typography
             className={classes.typography}
