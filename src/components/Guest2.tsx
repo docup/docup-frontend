@@ -16,6 +16,7 @@ import {
   AppBar,
   Toolbar,
   IconButton,
+  Dialog,
   InputBase,
 } from '@material-ui/core';
 import { Menu, Favorite, Search } from '@material-ui/icons';
@@ -26,6 +27,7 @@ import {
   MuiThemeProvider,
 } from '@material-ui/core/styles';
 import { customTheme } from '../theme';
+import SignIn3 from './SignIn3';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -95,6 +97,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     cardActionArea: {
       height: '100%',
+    },
+    loginDialog: {
+      maxWidth: 'xl',
     },
   })
 );
@@ -252,6 +257,17 @@ const Guest2: React.FC<Props> = ({ text }) => {
           </GridList>
         </Container>
       </div>
+      <Dialog
+        className={classes.loginDialog}
+        fullWidth={true}
+        maxWidth="xl"
+        open={true}
+        onClose={() => {}}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <SignIn3 />
+      </Dialog>
     </MuiThemeProvider>
   );
 };
