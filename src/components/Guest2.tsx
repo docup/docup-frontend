@@ -19,10 +19,18 @@ import {
   Dialog,
   DialogActions,
   InputBase,
+  SwipeableDrawer,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
   Menu,
   MenuItem,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
 import { Favorite, Search } from '@material-ui/icons';
 import {
   Theme,
@@ -105,6 +113,7 @@ const useStyles = makeStyles((theme: Theme) =>
     loginDialog: {
       maxWidth: 'xl',
     },
+    swipeableDrawer: {},
   })
 );
 
@@ -180,6 +189,7 @@ const Guest2: React.FC<Props> = ({ text }) => {
   const classes = useStyles();
 
   const [openDialog, setOpenDialog] = useState(false);
+  const [openLeftSideMenu, setOpenLeftSideMenu] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -196,7 +206,9 @@ const Guest2: React.FC<Props> = ({ text }) => {
               className={classes.menuButton}
               color="inherit"
               aria-label="menu"
-              onClick={handleOpenMenu}
+              onClick={() => {
+                setOpenLeftSideMenu(true);
+              }}
             >
               <MenuIcon />
             </IconButton>
@@ -331,6 +343,44 @@ const Guest2: React.FC<Props> = ({ text }) => {
           Logout
         </MenuItem>
       </Menu>
+      <SwipeableDrawer
+        className={classes.swipeableDrawer}
+        anchor="left"
+        open={openLeftSideMenu}
+        onClose={() => {
+          setOpenLeftSideMenu(false);
+        }}
+        onOpen={() => {
+          setOpenLeftSideMenu(true);
+        }}
+      >
+        <List>
+          {[
+            'Inboxxxxxxxxxxxxxxxxxxxxxx',
+            'Starred',
+            'Send email',
+            'Drafts',
+          ].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+      </SwipeableDrawer>
     </MuiThemeProvider>
   );
 };
