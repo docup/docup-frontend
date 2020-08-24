@@ -56,6 +56,10 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       background: '#FFF',
     },
+    textFieldConfirmCode: {
+      width: '100%',
+      background: '#FFF',
+    },
     button: {
       width: '100%',
     },
@@ -88,49 +92,33 @@ var actionCodeSettings = {
   handleCodeInApp: true,
 };
 
-const SignIn3: React.FC<Props> = ({}) => {
+var recaptchaVerifier: any;
+
+const SignUpPhoneNumber: React.FC<Props> = ({}) => {
   const classes = useStyles();
 
-  const [email, setEmail] = useState('');
+  const [tel, setTel] = useState('');
+  const [confirmationCode, setConfirmationCode] = useState('');
   const [activeStep, setActiveStep] = React.useState(0);
   const [slideIndex, setSlideIndex] = React.useState(0);
   const [errorText, setErrorText] = React.useState('');
-  const steps = [
-    'Emailまたは電話番号を入力してください',
-    '認証リンクを開いてください',
-  ];
-  var recaptchaVerifier: firebase.auth.ApplicationVerifier;
+  const steps = ['電話番号を入力してください', '確認コードを入力してください'];
+
+  var confirmationResult: firebase.auth.ConfirmationResult;
 
   const handleSignUp = () => {
-    const re = /^.+@.+$/i;
     const reTel = /^\+819[0-9].+$/i; //携帯電話
-    if (re.test(email)) {
-      setErrorText('');
-      firebase
-        .auth()
-        .sendSignInLinkToEmail(email, actionCodeSettings)
-        .then(function() {
-          console.log('The link was successfully sent');
-          // The link was successfully sent. Inform the user.
-          // Save the email locally so you don't need to ask the user for it again
-          // if they open the link on the same device.
-          window.localStorage.setItem('emailForSignIn', email);
-          setActiveStep(prevActiveStep => prevActiveStep + 1);
-        })
-        .catch(function(error) {
-          // Some error occurred, you can inspect the code: error.code
-          console.error(error);
-        });
-    } else if (reTel.test(email)) {
+    if (reTel.test(tel)) {
       setErrorText('');
 
       firebase
         .auth()
-        .signInWithPhoneNumber(email, recaptchaVerifier)
-        .then(function(confirmationResult) {
+        .signInWithPhoneNumber(tel, recaptchaVerifier)
+        .then(function(result) {
           // SMS sent. Prompt user to type the code from the message, then sign the
           // user in with confirmationResult.confirm(code).
-          console.log(confirmationResult);
+          confirmationResult = result;
+          setActiveStep(prevActiveStep => prevActiveStep + 1);
         })
         .catch(function(error) {
           console.error(error);
@@ -140,19 +128,47 @@ const SignIn3: React.FC<Props> = ({}) => {
     }
   };
 
-  const emailOnChange = (event: any) => {
-    setEmail(event.target.value);
+  const telOnChange = (event: any) => {
+    setTel(event.target.value);
   };
 
-  useEffect(() => {
-    const unsubscribe = firebase
-      .auth()
-      .onAuthStateChanged((user: firebase.User | null) => {
-        if (user != null && activeStep == 1) {
-          window.location.replace('/');
-        }
+  const handleConfirmation = () => {
+    confirmationResult
+      .confirm(confirmationCode)
+      .then(function(result) {
+        // User signed in successfully.
+        var user = result.user;
+        window.location.replace('/');
+      })
+      .catch(function(error) {
+        console.error(error);
       });
-    return () => unsubscribe();
+  };
+
+  // useEffect(() => {
+  //   const unsubscribe = firebase
+  //     .auth()
+  //     .onAuthStateChanged((user: firebase.User | null) => {
+  //       if (user != null && activeStep == 1) {
+  //         window.location.replace('/');
+  //       }
+  //     });
+  //   return () => unsubscribe();
+  // });
+
+  const useDidMount = (func: Function) =>
+    useEffect(() => {
+      return func();
+    }, []);
+
+  useDidMount(() => {
+    recaptchaVerifier = new firebase.auth.RecaptchaVerifier('submitButton', {
+      size: 'invisible',
+      callback: function(response: any) {
+        // reCAPTCHA solved, allow signInWithPhoneNumber.
+      },
+    });
+    recaptchaVerifier.render().then(function(widgetId: any) {});
   });
 
   return (
@@ -194,11 +210,12 @@ const SignIn3: React.FC<Props> = ({}) => {
                   error={errorText != ''}
                   required
                   className={classes.textField}
-                  id="outlined-required"
-                  label="Emailまたは電話番号"
-                  value={email}
+                  type="tel"
+                  id="tel"
+                  label="電話番号"
+                  value={tel}
                   variant="outlined"
-                  onChange={emailOnChange}
+                  onChange={telOnChange}
                   helperText={errorText}
                 />
                 <Box m={3} />
@@ -217,20 +234,50 @@ const SignIn3: React.FC<Props> = ({}) => {
           )}
           {activeStep == 1 && (
             <Slide direction="left" in={true} mountOnEnter unmountOnExit>
-              <Paper elevation={2} className={classes.paperConfirm}>
+              <Paper elevation={0}>
+                <Paper elevation={2} className={classes.paperConfirm}>
+                  <Box m={3} />
+                  <Typography
+                    className={classes.typography}
+                    variant="h5"
+                    component="h6"
+                  >
+                    確認コードを入力してください
+                  </Typography>
+                  <Box
+                    m={3}
+                    maxWidth="200px"
+                    style={{ marginLeft: 'auto', marginRight: 'auto' }}
+                  >
+                    <TextField
+                      error={errorText != ''}
+                      required
+                      className={classes.textFieldConfirmCode}
+                      type="number"
+                      id="confirmation-code"
+                      label="6桁の確認コード"
+                      value={confirmationCode}
+                      variant="outlined"
+                      onChange={event => {
+                        setConfirmationCode(event.target.value);
+                      }}
+                    />
+                  </Box>
+                  <Typography className={classes.typography}>
+                    電話番号に送信されたSMSに記載されている確認コードを確認してください
+                  </Typography>
+                  <Box m={3} />
+                </Paper>
                 <Box m={3} />
-                <Typography
-                  className={classes.typography}
-                  variant="h5"
-                  component="h6"
+                <Button
+                  id="confirmationButton"
+                  className={classes.button}
+                  variant="contained"
+                  color="primary"
+                  onClick={handleConfirmation}
                 >
-                  認証リンクを送信しました
-                </Typography>
-                <Box m={3} />
-                <Typography className={classes.typography}>
-                  {email}
-                  に認証リンクを送信しました。リンクをクリックしてログインを完了してください
-                </Typography>
+                  認証
+                </Button>
                 <Box m={3} />
               </Paper>
             </Slide>
@@ -241,4 +288,4 @@ const SignIn3: React.FC<Props> = ({}) => {
   );
 };
 
-export default SignIn3;
+export default SignUpPhoneNumber;

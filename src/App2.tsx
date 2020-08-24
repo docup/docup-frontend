@@ -8,6 +8,7 @@ import { Private } from './components/Private';
 import { Signin2 } from './components/Signin2';
 import SignIn3 from './components/SignIn3';
 import SignUp2 from './components/SignUp2';
+import SignUpPhoneNumber from './components/SignUpPhoneNumber';
 import SignInWithEmailLink from './components/SignInWithEmailLink';
 
 const firebaseConfig = {
@@ -88,6 +89,9 @@ const App2: React.FC = () => {
           </Route>
           <Route path="/signup">
             <SignUp2 />
+          </Route>
+          <Route path="/signup-phone">
+            <SignUpPhoneNumber />
           </Route>
           <Route path="/signinwithemaillink">
             <SignInWithEmailLink />
