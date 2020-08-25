@@ -36,6 +36,7 @@ import {
   MuiThemeProvider,
 } from '@material-ui/core/styles';
 import { customTheme } from '../theme';
+import { useForm } from 'react-hook-form';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -74,6 +75,12 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       width: '100%',
     },
+    button2: {
+      display: 'block',
+      width: '30%',
+      marginRight: '0px',
+      marginLeft: 'auto',
+    },
   })
 );
 
@@ -97,8 +104,14 @@ const Personal: React.FC<Props> = ({}) => {
   const { history, location, match } = useReactRouter();
   const [country, setCountry] = React.useState('+81');
   const [prefecture, setPrefecture] = React.useState('東京都');
+  const { register, handleSubmit, watch, errors } = useForm({
+    mode: 'onChange',
+  });
 
-  const handleSubmit = () => {};
+  const onSubmit = () => {
+    console.log('ok');
+    console.log(errors);
+  };
 
   return (
     <MuiThemeProvider theme={customTheme}>
@@ -113,8 +126,23 @@ const Personal: React.FC<Props> = ({}) => {
             <Box>
               <TextField
                 label="性"
+                name="lastname"
                 variant="outlined"
                 className={classes.tf4}
+                inputRef={register({
+                  required: true,
+                  maxLength: 10,
+                })}
+                onChange={onSubmit}
+                error={Boolean(errors.lastname)}
+                helperText={
+                  errors.lastname &&
+                  (errors.lastname.type == 'required'
+                    ? '必須項目です'
+                    : errors.lastname.type == 'maxLength'
+                    ? '最大10文字まで'
+                    : '')
+                }
               ></TextField>
               <TextField
                 label="名"
@@ -134,6 +162,17 @@ const Personal: React.FC<Props> = ({}) => {
                 className={classes.tf4}
               ></TextField>
             </Box>
+            <Box m={3} />
+            <Button
+              id="submitButton"
+              className={classes.button2}
+              variant="contained"
+              color="primary"
+              disabled={true}
+              onClick={onSubmit}
+            >
+              更新
+            </Button>
           </Paper>
           <Paper elevation={2} className={classes.paper}>
             <Typography variant="h6" className={classes.typo}>
@@ -161,6 +200,17 @@ const Personal: React.FC<Props> = ({}) => {
                 variant="outlined"
               ></TextField>
             </Box>
+            <Box m={3} />
+            <Button
+              id="submitButton"
+              className={classes.button2}
+              variant="contained"
+              color="primary"
+              disabled={true}
+              onClick={onSubmit}
+            >
+              更新
+            </Button>
           </Paper>
           <Paper elevation={2} className={classes.paper}>
             <Typography variant="h6" className={classes.typo}>
@@ -191,6 +241,17 @@ const Personal: React.FC<Props> = ({}) => {
                 variant="outlined"
               ></TextField>
             </Box>
+            <Box m={3} />
+            <Button
+              id="submitButton"
+              className={classes.button2}
+              variant="contained"
+              color="primary"
+              disabled={true}
+              onClick={onSubmit}
+            >
+              更新
+            </Button>
           </Paper>
           <Paper elevation={2} className={classes.paper}>
             <Typography variant="h6" className={classes.typo}>
@@ -232,17 +293,18 @@ const Personal: React.FC<Props> = ({}) => {
                 variant="outlined"
               ></TextField>
             </Box>
+            <Box m={3} />
+            <Button
+              id="submitButton"
+              className={classes.button2}
+              variant="contained"
+              color="primary"
+              disabled={true}
+              onClick={onSubmit}
+            >
+              更新
+            </Button>
           </Paper>
-          <Box m={3} />
-          <Button
-            id="submitButton"
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-          >
-            更新
-          </Button>
           <Box m={3} />
         </Container>
       </div>
