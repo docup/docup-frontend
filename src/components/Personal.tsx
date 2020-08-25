@@ -68,6 +68,9 @@ const useStyles = makeStyles((theme: Theme) =>
     tf3: {
       width: '90%',
     },
+    tf4: {
+      width: '40%',
+    },
     button: {
       width: '100%',
     },
@@ -108,12 +111,28 @@ const Personal: React.FC<Props> = ({}) => {
             <Divider />
             <Box m={3} />
             <Box>
-              <TextField label="性" variant="outlined"></TextField>
-              <TextField label="名" variant="outlined"></TextField>
+              <TextField
+                label="性"
+                variant="outlined"
+                className={classes.tf4}
+              ></TextField>
+              <TextField
+                label="名"
+                variant="outlined"
+                className={classes.tf4}
+              ></TextField>
             </Box>
             <Box>
-              <TextField label="性（フリガナ）" variant="outlined"></TextField>
-              <TextField label="名（フリガナ）" variant="outlined"></TextField>
+              <TextField
+                label="セイ"
+                variant="outlined"
+                className={classes.tf4}
+              ></TextField>
+              <TextField
+                label="メイ"
+                variant="outlined"
+                className={classes.tf4}
+              ></TextField>
             </Box>
           </Paper>
           <Paper elevation={2} className={classes.paper}>
@@ -181,7 +200,7 @@ const Personal: React.FC<Props> = ({}) => {
             <Box m={3} />
             <Box>
               <TextField
-                className={classes.tf}
+                className={classes.tf4}
                 type="number"
                 label="郵便番号"
                 variant="outlined"
@@ -222,8 +241,9 @@ const Personal: React.FC<Props> = ({}) => {
             color="primary"
             onClick={handleSubmit}
           >
-            新規登録
+            更新
           </Button>
+          <Box m={3} />
         </Container>
       </div>
     </MuiThemeProvider>
