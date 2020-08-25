@@ -10,6 +10,7 @@ import SignIn3 from './components/SignIn3';
 import SignUp2 from './components/SignUp2';
 import SignUpPhoneNumber from './components/SignUpPhoneNumber';
 import SignInWithEmailLink from './components/SignInWithEmailLink';
+import Personal from './components/Personal';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBQzMyPZ6eVB7YpV-l7rFvlUCs35ZkghjE',
@@ -95,6 +96,9 @@ const App2: React.FC = () => {
           </Route>
           <Route path="/signinwithemaillink">
             <SignInWithEmailLink />
+          </Route>
+          <Route path="/personal">
+            <Personal />
           </Route>
           <Route path="/private">
             <Private />

@@ -26,6 +26,8 @@ import {
   ListItemText,
   ListItemIcon,
   Avatar,
+  Backdrop,
+  CircularProgress,
   Menu,
   MenuItem,
 } from '@material-ui/core';
@@ -43,6 +45,7 @@ import { customTheme } from '../theme';
 import SignIn3 from './SignIn3';
 import * as firebase from 'firebase';
 import { FirebaseAuth } from './FirebaseAuth';
+import useReactRouter from 'use-react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -117,6 +120,10 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 'xl',
     },
     swipeableDrawer: {},
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: '#fff',
+    },
   })
 );
 
@@ -221,16 +228,19 @@ const Guest2: React.FC<Props> = ({ text }) => {
 
   const [openDialog, setOpenDialog] = useState(false);
   const [openLeftSideMenu, setOpenLeftSideMenu] = useState(false);
+  const [openProgress, setOpenProgress] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [currentUser, setCurrentUser] = useState<firebase.User | null>(
     firebase.auth().currentUser
   );
+  const { history, location, match } = useReactRouter();
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
   const signOut = () => {
+    setOpenProgress(true);
     firebase
       .auth()
       .signOut()
@@ -239,6 +249,7 @@ const Guest2: React.FC<Props> = ({ text }) => {
       })
       .finally(() => {
         setCurrentUser(firebase.auth().currentUser);
+        setOpenProgress(false);
       });
   };
 
@@ -395,6 +406,14 @@ const Guest2: React.FC<Props> = ({ text }) => {
         <MenuItem
           onClick={() => {
             setAnchorEl(null);
+            history.push('/personal');
+          }}
+        >
+          個人情報設定
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setAnchorEl(null);
             signOut();
           }}
         >
@@ -436,6 +455,9 @@ const Guest2: React.FC<Props> = ({ text }) => {
           ))}
         </List>
       </SwipeableDrawer>
+      <Backdrop className={classes.backdrop} open={openProgress}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </MuiThemeProvider>
   );
 };
