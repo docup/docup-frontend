@@ -52,7 +52,8 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     paper: {
-      margin: '1em',
+      marginTop: '1em',
+      marginBottom: '1em',
       padding: '1em',
     },
     typo: {
@@ -64,6 +65,12 @@ const useStyles = makeStyles((theme: Theme) =>
     tf2: {
       width: '75%',
     },
+    tf3: {
+      width: '90%',
+    },
+    button: {
+      width: '100%',
+    },
   })
 );
 
@@ -72,7 +79,12 @@ type Props = {};
 const countries = [
   {
     value: '+81',
-    label: '+81',
+  },
+];
+
+const prefectures = [
+  {
+    value: '東京都',
   },
 ];
 
@@ -81,6 +93,9 @@ const Personal: React.FC<Props> = ({}) => {
 
   const { history, location, match } = useReactRouter();
   const [country, setCountry] = React.useState('+81');
+  const [prefecture, setPrefecture] = React.useState('東京都');
+
+  const handleSubmit = () => {};
 
   return (
     <MuiThemeProvider theme={customTheme}>
@@ -146,7 +161,7 @@ const Personal: React.FC<Props> = ({}) => {
               >
                 {countries.map(option => (
                   <MenuItem key={option.value} value={option.value}>
-                    {option.label}
+                    {option.value}
                   </MenuItem>
                 ))}
               </TextField>
@@ -158,6 +173,57 @@ const Personal: React.FC<Props> = ({}) => {
               ></TextField>
             </Box>
           </Paper>
+          <Paper elevation={2} className={classes.paper}>
+            <Typography variant="h6" className={classes.typo}>
+              住所
+            </Typography>
+            <Divider />
+            <Box m={3} />
+            <Box>
+              <TextField
+                className={classes.tf}
+                type="number"
+                label="郵便番号"
+                variant="outlined"
+                helperText="ハイフン不要"
+              ></TextField>
+              <TextField
+                select
+                label="都道府県"
+                value={prefecture}
+                onChange={e => {
+                  setPrefecture(e.target.value);
+                }}
+                variant="outlined"
+              >
+                {prefectures.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.value}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                className={classes.tf3}
+                label="住所1"
+                variant="outlined"
+              ></TextField>
+              <TextField
+                className={classes.tf3}
+                label="住所2"
+                variant="outlined"
+              ></TextField>
+            </Box>
+          </Paper>
+          <Box m={3} />
+          <Button
+            id="submitButton"
+            className={classes.button}
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+          >
+            新規登録
+          </Button>
         </Container>
       </div>
     </MuiThemeProvider>
