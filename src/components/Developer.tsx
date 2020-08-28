@@ -32,6 +32,7 @@ import {
   Tabs,
   Menu,
   MenuItem,
+  Paper,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
@@ -63,6 +64,14 @@ const useStyles = makeStyles((theme: Theme) =>
     backdrop: {
       zIndex: theme.zIndex.drawer + 1,
       color: '#fff',
+    },
+    tab: {
+      minWidth: '6vw',
+      maxWidth: '12vw',
+    },
+    paperContainer: {
+      backgroundImage: `url(${process.env.PUBLIC_URL}/images/bg01.png)`,
+      backgroundSize: 'contain',
     },
   })
 );
@@ -130,32 +139,53 @@ const Developer: React.FC<Props> = ({}) => {
           color="transparent"
           elevation={0}
         >
-          <Box display="flex" bgcolor="background.paper" p={1}>
-            <Box order={1}>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/personal-developer.png`}
-              />
+          <Container maxWidth="md">
+            <Box display="flex" bgcolor="background.paper" p={1}>
+              <Box order={1} m={2}>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/personal-developer.png`}
+                />
+              </Box>
+              <Box order={2} flexGrow={1} alignSelf="center">
+                <Tabs value={value} onChange={handleChange}>
+                  <Tab className={classes.tab} label="概要" {...a11yProps(0)} />
+                  <Tab
+                    className={classes.tab}
+                    label="プランと機能"
+                    {...a11yProps(1)}
+                  />
+                  <Tab
+                    className={classes.tab}
+                    label="デベロッパー"
+                    {...a11yProps(1)}
+                  />
+                  <Tab
+                    className={classes.tab}
+                    label="よくある質問"
+                    {...a11yProps(2)}
+                  />
+                  <Tab
+                    className={classes.tab}
+                    label="お問い合わせ"
+                    {...a11yProps(2)}
+                  />
+                </Tabs>
+              </Box>
+              <Box order={3} alignSelf="center">
+                <Button color="primary">ログイン</Button>
+              </Box>
             </Box>
-            <Box order={2} flexGrow={1} alignSelf="center">
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="simple tabs example"
-              >
-                <Tab label="概要" {...a11yProps(0)} />
-                <Tab label="料金" {...a11yProps(1)} />
-                <Tab label="スタートガイド" {...a11yProps(1)} />
-                <Tab label="コンソール" {...a11yProps(2)} />
-              </Tabs>
-            </Box>
-            <Box order={3} alignSelf="center">
-              <Button color="primary">ログイン</Button>
-            </Box>
-          </Box>
+          </Container>
           <Divider />
         </AppBar>
         <TabPanel value={value} index={0}>
-          Item One
+          <Container maxWidth="md">
+            <Box p={10}>
+              <Typography align="center" variant="h3">
+                <Box fontWeight="fontWeightBold">概要</Box>
+              </Typography>
+            </Box>
+          </Container>
         </TabPanel>
         <TabPanel value={value} index={1}>
           Item Two
@@ -163,9 +193,6 @@ const Developer: React.FC<Props> = ({}) => {
         <TabPanel value={value} index={2}>
           Item Three
         </TabPanel>
-        <Container maxWidth="md">
-          <div>aa</div>
-        </Container>
       </div>
 
       <Backdrop className={classes.backdrop} open={openProgress}>
