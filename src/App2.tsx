@@ -67,59 +67,59 @@ console.log(d);
 console.log(d.getMilliseconds());
 
 const App2: React.FC = () => {
-  const useDidMount = (func: Function) =>
-    useEffect(() => {
-      return func();
-    }, []);
+  // const useDidMount = (func: Function) =>
+  //   useEffect(() => {
+  //     return func();
+  //   }, []);
 
-  const [authChecked, setAuthCheched] = useState(false);
+  // const [authChecked, setAuthCheched] = useState(false);
 
-  useDidMount(() => {
-    const unsubscribe = firebase
-      .auth()
-      .onAuthStateChanged((user: firebase.User | null) => {
-        const d = new Date();
-        console.log(d);
-        console.log(d.getMilliseconds());
-        setAuthCheched(true);
-      });
-    return () => unsubscribe();
-  });
+  // useDidMount(() => {
+  //   const unsubscribe = firebase
+  //     .auth()
+  //     .onAuthStateChanged((user: firebase.User | null) => {
+  //       const d = new Date();
+  //       console.log(d);
+  //       console.log(d.getMilliseconds());
+  //       setAuthCheched(true);
+  //     });
+  //   return () => unsubscribe();
+  // });
 
-  if (authChecked) {
-    return (
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/">
-            <Guest2 text={'hoge'} />
-          </Route>
-          <Route path="/signin">
-            <SignIn3 />
-          </Route>
-          <Route path="/signup">
-            <SignUp2 />
-          </Route>
-          <Route path="/signup-phone">
-            <SignUpPhoneNumber />
-          </Route>
-          <Route path="/signinwithemaillink">
-            <SignInWithEmailLink />
-          </Route>
-          <Route path="/personal">
-            <Personal />
-          </Route>
-          <Route path="/developer">
-            <Developer />
-          </Route>
-          <Route path="/private">
-            <Private />
-          </Route>
-        </Switch>
-      </BrowserRouter>
-    );
-  } else {
-    return <div></div>;
-  }
+  //  if (authChecked) {
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/">
+          <Guest2 text={'hoge'} />
+        </Route>
+        <Route path="/signin">
+          <SignIn3 />
+        </Route>
+        <Route path="/signup">
+          <SignUp2 />
+        </Route>
+        <Route path="/signup-phone">
+          <SignUpPhoneNumber />
+        </Route>
+        <Route path="/signinwithemaillink">
+          <SignInWithEmailLink />
+        </Route>
+        <Route path="/personal">
+          <Personal />
+        </Route>
+        <Route path="/developer">
+          <Developer />
+        </Route>
+        <Route path="/private">
+          <Private />
+        </Route>
+      </Switch>
+    </BrowserRouter>
+  );
+  // } else {
+  //   return <div></div>;
+  // }
 };
 
 export default App2;

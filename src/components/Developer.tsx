@@ -49,6 +49,7 @@ import SignIn3 from './SignIn3';
 import * as firebase from 'firebase';
 import { FirebaseAuth } from './FirebaseAuth';
 import useReactRouter from 'use-react-router';
+import queryString from 'query-string';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -128,25 +129,37 @@ type Props = {};
 const Developer: React.FC<Props> = ({}) => {
   const classes = useStyles();
 
+  const { history, location, match } = useReactRouter();
+
   const [value, setValue] = React.useState(0);
   const [openProgress, setOpenProgress] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
+    history.push('/developer/' + newValue);
   };
+
+  useEffect(() => {
+    [
+      { p: '/developer/0', v: 0 },
+      { p: '/developer/1', v: 1 },
+      { p: '/developer/2', v: 2 },
+      { p: '/developer/3', v: 3 },
+      { p: '/developer/4', v: 4 },
+    ].map(({ p, v }) => {
+      if (history.location.pathname == p) {
+        setValue(v);
+      }
+    });
+  });
 
   return (
     <MuiThemeProvider theme={consoleTheme}>
       <div className={classes.root}>
-        <AppBar
-          position="static"
-          title="hoge"
-          color="transparent"
-          elevation={0}
-        >
+        <AppBar position="static" color="transparent" elevation={0}>
           <Container maxWidth="md">
-            <Box display="flex" bgcolor="background.paper" p={1}>
-              <Box order={1} m={2}>
+            <Box display="flex" bgcolor="background.paper">
+              <Box order={1} m={1}>
                 <img
                   src={`${process.env.PUBLIC_URL}/images/personal-developer.png`}
                 />
@@ -181,7 +194,7 @@ const Developer: React.FC<Props> = ({}) => {
                 </Tabs>
               </Box>
               <Box order={3} alignSelf="center">
-                <Button color="primary">ログイン</Button>
+                <Button color="primary">サインイン</Button>
               </Box>
             </Box>
           </Container>
