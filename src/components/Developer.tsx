@@ -61,6 +61,11 @@ const useStyles = makeStyles((theme: Theme) =>
       //background: '#333333',
     },
     appbar: {},
+    appnavi: {
+      [theme.breakpoints.down('sm')]: {
+        display: 'none',
+      },
+    },
     backdrop: {
       zIndex: theme.zIndex.drawer + 1,
       color: '#fff',
@@ -123,10 +128,10 @@ type Props = {};
 const Developer: React.FC<Props> = ({}) => {
   const classes = useStyles();
 
-  const [value, setValue] = React.useState('one');
+  const [value, setValue] = React.useState(0);
   const [openProgress, setOpenProgress] = useState(false);
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 
@@ -147,7 +152,11 @@ const Developer: React.FC<Props> = ({}) => {
                 />
               </Box>
               <Box order={2} flexGrow={1} alignSelf="center">
-                <Tabs value={value} onChange={handleChange}>
+                <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  className={classes.appnavi}
+                >
                   <Tab className={classes.tab} label="概要" {...a11yProps(0)} />
                   <Tab
                     className={classes.tab}
