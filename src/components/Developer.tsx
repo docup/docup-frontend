@@ -147,9 +147,7 @@ const Developer: React.FC<Props> = ({}) => {
               </Tabs>
             </Box>
             <Box order={3} alignSelf="center">
-              <Button variant="contained" color="primary">
-                ログイン
-              </Button>
+              <Button color="primary">ログイン</Button>
             </Box>
           </Box>
           <Divider />
