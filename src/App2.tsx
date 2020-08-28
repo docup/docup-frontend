@@ -8,6 +8,7 @@ import { Private } from './components/Private';
 import { Signin2 } from './components/Signin2';
 import SignIn3 from './components/SignIn3';
 import SignUp2 from './components/SignUp2';
+import Developer from './components/Developer';
 import SignUpPhoneNumber from './components/SignUpPhoneNumber';
 import SignInWithEmailLink from './components/SignInWithEmailLink';
 import Personal from './components/Personal';
@@ -61,6 +62,10 @@ function readform() {
     });
 }
 
+const d = new Date();
+console.log(d);
+console.log(d.getMilliseconds());
+
 const App2: React.FC = () => {
   const useDidMount = (func: Function) =>
     useEffect(() => {
@@ -73,6 +78,9 @@ const App2: React.FC = () => {
     const unsubscribe = firebase
       .auth()
       .onAuthStateChanged((user: firebase.User | null) => {
+        const d = new Date();
+        console.log(d);
+        console.log(d.getMilliseconds());
         setAuthCheched(true);
       });
     return () => unsubscribe();
@@ -99,6 +107,9 @@ const App2: React.FC = () => {
           </Route>
           <Route path="/personal">
             <Personal />
+          </Route>
+          <Route path="/developer">
+            <Developer />
           </Route>
           <Route path="/private">
             <Private />

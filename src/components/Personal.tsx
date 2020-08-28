@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'space-around',
       overflow: 'hidden',
       //backgroundColor: theme.palette.background.paper,
-      //background: '#F0F0F0',
+      background: '#F0F0F0',
 
       '& .MuiTextField-root': {
         margin: theme.spacing(1),
