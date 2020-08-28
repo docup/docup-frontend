@@ -131,10 +131,12 @@ const Developer: React.FC<Props> = ({}) => {
           elevation={0}
         >
           <Box display="flex" bgcolor="background.paper" p={1}>
-            <Box order={1} bgcolor="grey.300">
-              Item 3
+            <Box order={1}>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/personal-developer.png`}
+              />
             </Box>
-            <Box order={2} flexGrow={1}>
+            <Box order={2} flexGrow={1} alignSelf="center">
               <Tabs
                 value={value}
                 onChange={handleChange}
