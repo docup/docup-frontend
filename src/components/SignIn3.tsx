@@ -190,7 +190,6 @@ const SignIn3: React.FC<Props> = props => {
   };
 
   useEffect(() => {
-    console.log('useeffect');
     const unsubscribe = firebase
       .auth()
       .onAuthStateChanged((user: firebase.User | null) => {

@@ -26,6 +26,13 @@ import {
   TextField,
   Slide,
   MenuItem,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  DialogActions,
+  Backdrop,
+  CircularProgress,
 } from '@material-ui/core';
 import { Menu, Favorite, Search } from '@material-ui/icons';
 import {
@@ -47,6 +54,10 @@ const useStyles = makeStyles((theme: Theme) =>
       overflow: 'hidden',
       //backgroundColor: theme.palette.background.paper,
       //background: '#F0F0F0',
+    },
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: '#fff',
     },
     paperConfirm: {
       background: '#F0F0F0',
@@ -78,9 +89,8 @@ const StyledRating = withStyles({
 })(Rating);
 
 type Props = {
-  //onSignIn: (token: any, user: any) => void;
+  onSignIn?: (user: firebase.User) => void;
 };
-
 var actionCodeSettings = {
   // URL you want to redirect back to. The domain (www.example.com) for this
   // URL must be whitelisted in the Firebase Console.
@@ -95,7 +105,7 @@ const countries = [
   },
 ];
 
-const SignIn3: React.FC<Props> = ({}) => {
+const SignIn3: React.FC<Props> = props => {
   const classes = useStyles();
 
   const [email, setEmail] = useState('');
@@ -106,8 +116,31 @@ const SignIn3: React.FC<Props> = ({}) => {
   const [slideIndex, setSlideIndex] = React.useState(0);
   const [errorTextEmail, setErrorTextEmail] = React.useState('');
   const [errorTextForLink, setErrorTextForLink] = React.useState('');
+  const [alertDialogText, setAlertDialogText] = useState('');
+  const [openAlertDialog, setOpenAlertDialog] = useState(false);
+  const [openProgress, setOpenProgress] = useState(false);
   const steps = ['入力', '登録の確認'];
   var recaptchaVerifier: firebase.auth.ApplicationVerifier;
+
+  const handleEmailSignUp = () => {
+    const re = /^.+@.+$/i;
+    if (re.test(email)) {
+      setErrorTextEmail('');
+      setOpenProgress(true);
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .catch(function(error) {
+          setAlertDialogText(JSON.stringify(error));
+          setOpenAlertDialog(true);
+        })
+        .finally(() => {
+          setOpenProgress(false);
+        });
+    } else {
+      setErrorTextEmail('入力内容が正しくありません');
+    }
+  };
 
   const handleSignUp = () => {
     const re = /^.+@.+$/i;
@@ -156,8 +189,8 @@ const SignIn3: React.FC<Props> = ({}) => {
     const unsubscribe = firebase
       .auth()
       .onAuthStateChanged((user: firebase.User | null) => {
-        if (user != null && activeStep == 1) {
-          window.location.replace('/');
+        if (props.onSignIn && user) {
+          props.onSignIn(user);
         }
       });
     return () => unsubscribe();
@@ -230,7 +263,7 @@ const SignIn3: React.FC<Props> = ({}) => {
                   className={classes.button}
                   variant="contained"
                   color="primary"
-                  onClick={handleSignUp}
+                  onClick={handleEmailSignUp}
                 >
                   新規登録
                 </Button>
@@ -332,6 +365,35 @@ const SignIn3: React.FC<Props> = ({}) => {
           )}
         </Container>
       </div>
+      <Dialog
+        open={openAlertDialog}
+        onClose={() => {
+          setOpenAlertDialog(false);
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">ERROR</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {alertDialogText}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setOpenAlertDialog(false);
+            }}
+            color="primary"
+            autoFocus
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Backdrop className={classes.backdrop} open={openProgress}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </MuiThemeProvider>
   );
 };

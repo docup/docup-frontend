@@ -62,11 +62,7 @@ function readform() {
     });
 }
 
-const d = new Date();
-console.log(d);
-console.log(d.getMilliseconds());
-
-const App2: React.FC = () => {
+const App2: React.FC = props => {
   // const useDidMount = (func: Function) =>
   //   useEffect(() => {
   //     return func();
@@ -97,7 +93,11 @@ const App2: React.FC = () => {
           <SignIn3 />
         </Route>
         <Route path="/signup">
-          <SignUp2 />
+          <SignUp2
+            onSignIn={() => {
+              window.location.replace('/');
+            }}
+          />
         </Route>
         <Route path="/signup-phone">
           <SignUpPhoneNumber />
