@@ -22,6 +22,11 @@ import {
   Divider,
   Paper,
   TextField,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  DialogActions,
 } from '@material-ui/core';
 import { Menu, Favorite, Search } from '@material-ui/icons';
 import {
@@ -101,6 +106,8 @@ const SignIn3: React.FC<Props> = props => {
   const [password, setPassword] = useState('');
   const [openAuthLinkContainer, setOpenAuthLinkContainer] = useState(false);
   const [openProgress, setOpenProgress] = useState(false);
+  const [alertDialogText, setAlertDialogText] = useState('');
+  const [openAlertDialog, setOpenAlertDialog] = useState(false);
   const { history, location, match } = useReactRouter();
 
   // const useDidMount = (func: Function) =>
@@ -168,7 +175,14 @@ const SignIn3: React.FC<Props> = props => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .catch(function(error) {
-        console.error(error);
+        // switch (error.code) {
+        //   case 'auth/too-many-requests': {
+        //   }
+        // }
+        // console.log(error.code);
+        // console.error(error);
+        setAlertDialogText(JSON.stringify(error));
+        setOpenAlertDialog(true);
       })
       .finally(() => {
         setOpenProgress(false);
@@ -176,6 +190,7 @@ const SignIn3: React.FC<Props> = props => {
   };
 
   useEffect(() => {
+    console.log('useeffect');
     const unsubscribe = firebase
       .auth()
       .onAuthStateChanged((user: firebase.User | null) => {
@@ -313,6 +328,32 @@ const SignIn3: React.FC<Props> = props => {
           </Container>
         )}
       </div>
+      <Dialog
+        open={openAlertDialog}
+        onClose={() => {
+          setOpenAlertDialog(false);
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">ERROR</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {alertDialogText}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setOpenAlertDialog(false);
+            }}
+            color="primary"
+            autoFocus
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Backdrop className={classes.backdrop} open={openProgress}>
         <CircularProgress color="inherit" />
       </Backdrop>
