@@ -96,6 +96,7 @@ const SignIn3: React.FC<Props> = ({}) => {
   const classes = useStyles();
 
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [openAuthLinkContainer, setOpenAuthLinkContainer] = useState(false);
   const [openProgress, setOpenProgress] = useState(false);
 
@@ -180,6 +181,42 @@ const SignIn3: React.FC<Props> = ({}) => {
         )}
         {!openAuthLinkContainer && (
           <Container maxWidth="sm">
+            <Box m={3} />
+            <TextField
+              required
+              className={classes.textField}
+              id="inputEmail"
+              label="Email"
+              variant="outlined"
+              value={email}
+              onChange={e => {
+                setEmail(e.target.value);
+              }}
+            />
+            <Box m={3} />
+            <TextField
+              required
+              type="password"
+              className={classes.textField}
+              id="inputPassword"
+              label="Password"
+              variant="outlined"
+              value={password}
+              onChange={e => {
+                setPassword(e.target.value);
+              }}
+            />
+            <Box m={3} />
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              onClick={handleEmailSignIn}
+            >
+              サインイン
+            </Button>
+            <Box m={3} />
+            <Divider />
             <Box m={3} />
             <TextField
               required
