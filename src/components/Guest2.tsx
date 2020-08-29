@@ -376,7 +376,11 @@ const Guest2: React.FC<Props> = ({ text }) => {
         aria-describedby="simple-modal-description"
         scroll="body"
       >
-        <SignIn3 />
+        <SignIn3
+          onSignIn={() => {
+            setOpenDialog(false);
+          }}
+        />
         <DialogActions>
           <Button
             onClick={() => {

@@ -33,6 +33,7 @@ import {
 import GoogleButton from 'react-google-button';
 import { customTheme } from '../theme';
 import * as firebase from 'firebase';
+import useReactRouter from 'use-react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -86,19 +87,21 @@ const StyledRating = withStyles({
 })(Rating);
 
 type Props = {
-  //onSignIn: (token: any, user: any) => void;
+  onSignIn?: (user: firebase.User) => void;
 };
 
 const authProvider = new firebase.auth.GoogleAuthProvider();
 authProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
-const SignIn3: React.FC<Props> = ({}) => {
+const SignIn3: React.FC<Props> = props => {
   const classes = useStyles();
 
   const [email, setEmail] = useState('');
+  const [emailForLink, setEmailForLink] = useState('');
   const [password, setPassword] = useState('');
   const [openAuthLinkContainer, setOpenAuthLinkContainer] = useState(false);
   const [openProgress, setOpenProgress] = useState(false);
+  const { history, location, match } = useReactRouter();
 
   // const useDidMount = (func: Function) =>
   //   useEffect(() => {
@@ -134,19 +137,19 @@ const SignIn3: React.FC<Props> = ({}) => {
       // URL must be whitelisted in the Firebase Console.
       url:
         'http://c02c6157md6t.local:3000/signinwithemaillink?email=' +
-        encodeURIComponent(email),
+        encodeURIComponent(emailForLink),
       // This must be true.
       handleCodeInApp: true,
     };
 
     firebase
       .auth()
-      .sendSignInLinkToEmail(email, actionCodeSettings)
+      .sendSignInLinkToEmail(emailForLink, actionCodeSettings)
       .then(function() {
         // The link was successfully sent. Inform the user.
         // Save the email locally so you don't need to ask the user for it again
         // if they open the link on the same device.
-        window.localStorage.setItem('emailForSignIn', email);
+        window.localStorage.setItem('emailForSignIn', emailForLink);
         setOpenAuthLinkContainer(true);
       })
       .catch(function(error) {
@@ -157,6 +160,31 @@ const SignIn3: React.FC<Props> = ({}) => {
         setOpenProgress(false);
       });
   };
+
+  const handlePasswordSignIn = () => {
+    setOpenProgress(true);
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch(function(error) {
+        console.error(error);
+      })
+      .finally(() => {
+        setOpenProgress(false);
+      });
+  };
+
+  useEffect(() => {
+    const unsubscribe = firebase
+      .auth()
+      .onAuthStateChanged((user: firebase.User | null) => {
+        if (props.onSignIn && user) {
+          props.onSignIn(user);
+        }
+      });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <MuiThemeProvider theme={customTheme}>
@@ -173,7 +201,7 @@ const SignIn3: React.FC<Props> = ({}) => {
             </Typography>
             <Box m={3} />
             <Typography className={classes.typography}>
-              {email}
+              {emailForLink}
               に認証リンクを送信しました。リンクをクリックしてサインインを完了してください。
             </Typography>
             <Box m={3} />
@@ -211,7 +239,7 @@ const SignIn3: React.FC<Props> = ({}) => {
               className={classes.button}
               variant="contained"
               color="primary"
-              onClick={handleEmailSignIn}
+              onClick={handlePasswordSignIn}
             >
               サインイン
             </Button>
@@ -224,9 +252,9 @@ const SignIn3: React.FC<Props> = ({}) => {
               id="inputEmail"
               label="Email"
               variant="outlined"
-              value={email}
+              value={emailForLink}
               onChange={e => {
-                setEmail(e.target.value);
+                setEmailForLink(e.target.value);
               }}
             />
             <Box m={3} />
