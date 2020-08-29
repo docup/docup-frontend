@@ -25,6 +25,7 @@ import {
   StepLabel,
   TextField,
   Slide,
+  MenuItem,
 } from '@material-ui/core';
 import { Menu, Favorite, Search } from '@material-ui/icons';
 import {
@@ -88,10 +89,19 @@ var actionCodeSettings = {
   handleCodeInApp: true,
 };
 
+const countries = [
+  {
+    value: '+81',
+  },
+];
+
 const SignIn3: React.FC<Props> = ({}) => {
   const classes = useStyles();
 
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailForLink, setEmailForLink] = useState('');
+  const [country, setCountry] = React.useState('+81');
   const [activeStep, setActiveStep] = React.useState(0);
   const [slideIndex, setSlideIndex] = React.useState(0);
   const [errorText, setErrorText] = React.useState('');
@@ -104,29 +114,29 @@ const SignIn3: React.FC<Props> = ({}) => {
   const handleSignUp = () => {
     const re = /^.+@.+$/i;
     const reTel = /^\+819[0-9].+$/i; //携帯電話
-    if (re.test(email)) {
+    if (re.test(emailForLink)) {
       setErrorText('');
       firebase
         .auth()
-        .sendSignInLinkToEmail(email, actionCodeSettings)
+        .sendSignInLinkToEmail(emailForLink, actionCodeSettings)
         .then(function() {
           console.log('The link was successfully sent');
           // The link was successfully sent. Inform the user.
           // Save the email locally so you don't need to ask the user for it again
           // if they open the link on the same device.
-          window.localStorage.setItem('emailForSignIn', email);
+          window.localStorage.setItem('emailForSignIn', emailForLink);
           setActiveStep(prevActiveStep => prevActiveStep + 1);
         })
         .catch(function(error) {
           // Some error occurred, you can inspect the code: error.code
           console.error(error);
         });
-    } else if (reTel.test(email)) {
+    } else if (reTel.test(emailForLink)) {
       setErrorText('');
 
       firebase
         .auth()
-        .signInWithPhoneNumber(email, recaptchaVerifier)
+        .signInWithPhoneNumber(emailForLink, recaptchaVerifier)
         .then(function(confirmationResult) {
           // SMS sent. Prompt user to type the code from the message, then sign the
           // user in with confirmationResult.confirm(code).
@@ -140,8 +150,8 @@ const SignIn3: React.FC<Props> = ({}) => {
     }
   };
 
-  const emailOnChange = (event: any) => {
-    setEmail(event.target.value);
+  const emailForLinkOnChange = (event: any) => {
+    setEmailForLink(event.target.value);
   };
 
   useEffect(() => {
@@ -195,10 +205,52 @@ const SignIn3: React.FC<Props> = ({}) => {
                   required
                   className={classes.textField}
                   id="outlined-required"
-                  label="Emailまたは電話番号"
+                  label="Email"
                   value={email}
                   variant="outlined"
-                  onChange={emailOnChange}
+                  onChange={e => {
+                    setEmail(e.target.value);
+                  }}
+                  helperText={errorText}
+                />
+                <Box m={3} />
+                <TextField
+                  required
+                  type="password"
+                  className={classes.textField}
+                  id="inputPassword"
+                  label="Password"
+                  variant="outlined"
+                  value={password}
+                  onChange={e => {
+                    setPassword(e.target.value);
+                  }}
+                />
+                <Box m={3} />
+                <Button
+                  id="submitButton"
+                  className={classes.button}
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSignUp}
+                >
+                  新規登録
+                </Button>
+                <Box m={3} />
+                <Divider />
+                <Box m={3} />
+                <Typography className={classes.typography} color="secondary">
+                  または
+                </Typography>
+                <TextField
+                  error={errorText != ''}
+                  required
+                  className={classes.textField}
+                  id="outlined-required"
+                  label="Emailリンクによる認証"
+                  value={emailForLink}
+                  variant="outlined"
+                  onChange={emailForLinkOnChange}
                   helperText={errorText}
                 />
                 <Box m={3} />
@@ -218,6 +270,35 @@ const SignIn3: React.FC<Props> = ({}) => {
                   または
                 </Typography>
                 <Box m={1} />
+                <Box display="flex">
+                  <Box order={1}>
+                    <TextField
+                      select
+                      label="国"
+                      value={country}
+                      onChange={e => {
+                        setCountry(e.target.value);
+                      }}
+                      variant="outlined"
+                    >
+                      {countries.map(option => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.value}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Box>
+                  <Box order={2} m={1}></Box>
+                  <Box flexGrow={1} order={3}>
+                    <TextField
+                      fullWidth
+                      type="tel"
+                      label="電話番号"
+                      variant="outlined"
+                    ></TextField>
+                  </Box>
+                </Box>
+                <Box m={3} />
                 <Button
                   className={classes.button}
                   variant="contained"
@@ -244,7 +325,7 @@ const SignIn3: React.FC<Props> = ({}) => {
                 </Typography>
                 <Box m={3} />
                 <Typography className={classes.typography}>
-                  {email}
+                  {emailForLink}
                   に認証リンクを送信しました。リンクをクリックしてサインインを完了してください
                 </Typography>
                 <Box m={3} />
