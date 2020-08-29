@@ -104,18 +104,16 @@ const SignIn3: React.FC<Props> = ({}) => {
   const [country, setCountry] = React.useState('+81');
   const [activeStep, setActiveStep] = React.useState(0);
   const [slideIndex, setSlideIndex] = React.useState(0);
-  const [errorText, setErrorText] = React.useState('');
-  const steps = [
-    'Emailまたは電話番号を入力してください',
-    '認証リンクを開いてください',
-  ];
+  const [errorTextEmail, setErrorTextEmail] = React.useState('');
+  const [errorTextForLink, setErrorTextForLink] = React.useState('');
+  const steps = ['入力', '登録の確認'];
   var recaptchaVerifier: firebase.auth.ApplicationVerifier;
 
   const handleSignUp = () => {
     const re = /^.+@.+$/i;
     const reTel = /^\+819[0-9].+$/i; //携帯電話
     if (re.test(emailForLink)) {
-      setErrorText('');
+      setErrorTextForLink('');
       firebase
         .auth()
         .sendSignInLinkToEmail(emailForLink, actionCodeSettings)
@@ -132,7 +130,7 @@ const SignIn3: React.FC<Props> = ({}) => {
           console.error(error);
         });
     } else if (reTel.test(emailForLink)) {
-      setErrorText('');
+      setErrorTextForLink('');
 
       firebase
         .auth()
@@ -146,7 +144,7 @@ const SignIn3: React.FC<Props> = ({}) => {
           console.error(error);
         });
     } else {
-      setErrorText('入力内容が正しくありません');
+      setErrorTextForLink('入力内容が正しくありません');
     }
   };
 
@@ -201,7 +199,7 @@ const SignIn3: React.FC<Props> = ({}) => {
                 </Typography>
                 <Box m={3} />
                 <TextField
-                  error={errorText != ''}
+                  error={errorTextEmail != ''}
                   required
                   className={classes.textField}
                   id="outlined-required"
@@ -211,7 +209,7 @@ const SignIn3: React.FC<Props> = ({}) => {
                   onChange={e => {
                     setEmail(e.target.value);
                   }}
-                  helperText={errorText}
+                  helperText={errorTextEmail}
                 />
                 <Box m={3} />
                 <TextField
@@ -240,10 +238,10 @@ const SignIn3: React.FC<Props> = ({}) => {
                 <Divider />
                 <Box m={3} />
                 <Typography className={classes.typography} color="secondary">
-                  または
+                  または、パスワード不要のリンク認証
                 </Typography>
                 <TextField
-                  error={errorText != ''}
+                  error={errorTextForLink != ''}
                   required
                   className={classes.textField}
                   id="outlined-required"
@@ -251,7 +249,7 @@ const SignIn3: React.FC<Props> = ({}) => {
                   value={emailForLink}
                   variant="outlined"
                   onChange={emailForLinkOnChange}
-                  helperText={errorText}
+                  helperText={errorTextForLink}
                 />
                 <Box m={3} />
                 <Button
@@ -267,7 +265,7 @@ const SignIn3: React.FC<Props> = ({}) => {
                 <Divider />
                 <Box m={3} />
                 <Typography className={classes.typography} color="secondary">
-                  または
+                  または、電話番号で登録
                 </Typography>
                 <Box m={1} />
                 <Box display="flex">
@@ -302,12 +300,12 @@ const SignIn3: React.FC<Props> = ({}) => {
                 <Button
                   className={classes.button}
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                   onClick={() => {
                     window.location.href = '/signup-phone';
                   }}
                 >
-                  電話番号で新規登録
+                  新規登録
                 </Button>
               </Paper>
             </Slide>
