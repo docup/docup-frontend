@@ -9,4 +9,7 @@ export const consoleTheme = createMuiTheme({
   //     contrastText: '#FFFFFF',
   //   },
   // },
+  typography: {
+    fontFamily: ['Noto Sans JP', 'Roboto', 'sans-serif'].join(','),
+  },
 });

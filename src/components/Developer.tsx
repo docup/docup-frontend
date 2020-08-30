@@ -204,7 +204,7 @@ const Developer: React.FC<Props> = ({}) => {
           <Container maxWidth="md">
             <Box p={10}>
               <Typography align="center" variant="h3">
-                <Box fontWeight="fontWeightBold">概要</Box>
+                概要
               </Typography>
             </Box>
           </Container>
