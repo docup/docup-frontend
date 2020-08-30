@@ -109,11 +109,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`wrapped-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && children}
     </div>
   );
 }
