@@ -12,6 +12,7 @@ import Developer from './components/Developer';
 import SignUpPhoneNumber from './components/SignUpPhoneNumber';
 import SignInWithEmailLink from './components/SignInWithEmailLink';
 import Personal from './components/Personal';
+import dd from './datadog';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBQzMyPZ6eVB7YpV-l7rFvlUCs35ZkghjE',
@@ -61,6 +62,8 @@ function readform() {
       console.log('Error getting document:', error);
     });
 }
+
+dd.info('application started');
 
 const App2: React.FC = props => {
   // const useDidMount = (func: Function) =>

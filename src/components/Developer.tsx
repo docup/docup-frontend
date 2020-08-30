@@ -50,6 +50,7 @@ import * as firebase from 'firebase';
 import { FirebaseAuth } from './FirebaseAuth';
 import useReactRouter from 'use-react-router';
 import queryString from 'query-string';
+import dd from '../datadog';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -125,8 +126,6 @@ function a11yProps(index: any) {
 }
 
 type Props = {};
-
-console.error('datadog error test');
 
 const Developer: React.FC<Props> = ({}) => {
   const classes = useStyles();
