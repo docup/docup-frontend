@@ -15,4 +15,7 @@ export const customTheme = createMuiTheme({
       contrastText: '#ffffff',
     },
   },
+  typography: {
+    fontFamily: ['Noto Sans JP', 'Roboto', 'sans-serif'].join(','),
+  },
 });

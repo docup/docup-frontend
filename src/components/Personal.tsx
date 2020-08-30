@@ -46,11 +46,14 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'space-around',
       overflow: 'hidden',
       //backgroundColor: theme.palette.background.paper,
-      background: '#F0F0F0',
+      //background: '#F0F0F0',
 
       '& .MuiTextField-root': {
         margin: theme.spacing(1),
       },
+    },
+    container: {
+      background: '#F0F0F0',
     },
     paper: {
       marginTop: '1em',
@@ -116,7 +119,7 @@ const Personal: React.FC<Props> = ({}) => {
   return (
     <MuiThemeProvider theme={customTheme}>
       <div className={classes.root} id="rootDiv">
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" className={classes.container}>
           <Paper elevation={2} className={classes.paper}>
             <Typography variant="h6" className={classes.typo}>
               氏名

@@ -126,6 +126,8 @@ function a11yProps(index: any) {
 
 type Props = {};
 
+console.error('datadog error test');
+
 const Developer: React.FC<Props> = ({}) => {
   const classes = useStyles();
 

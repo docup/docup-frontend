@@ -1166,6 +1166,21 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
+"@datadog/browser-core@1.17.0":
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-core/-/browser-core-1.17.0.tgz#39457e4ceff394126193561453441cc920415432"
+  integrity sha512-4Ohq/gEL2SHQU/Ajwbx+f1xZO1RztZV4+uiI7nv9dpX9+kox42ixzT3Qy+ExJ/vfPMArEFcg1z173Mptf3Zpuw==
+  dependencies:
+    tslib "^1.10.0"
+
+"@datadog/browser-logs@^1.17.0":
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-logs/-/browser-logs-1.17.0.tgz#cfc715c17ca00f36acbf2d8bc2763a78b9d70d7c"
+  integrity sha512-GaBm0zgJSS793ZuW3raew0RkZCPXiVRJhLkmaGP+8+Em6EQCws4R7LYiT+d9WscbpvhjtSpvytYzpt975cqaow==
+  dependencies:
+    "@datadog/browser-core" "1.17.0"
+    tslib "^1.10.0"
+
 "@emotion/hash@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
