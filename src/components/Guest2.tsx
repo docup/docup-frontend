@@ -278,6 +278,7 @@ const Guest2: React.FC<Props> = ({ text }) => {
   };
 
   const onAPI = () => {
+    console.log(idToken);
     axios
       .get('http://c02c6157md6t.local:8080/private-query', {
         headers: {
