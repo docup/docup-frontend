@@ -371,6 +371,15 @@ const Guest2: React.FC<Props> = ({ text }) => {
             <Button variant="outlined" onClick={onAPI}>
               API test
             </Button>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                window.location.href =
+                  'http://c02c6157md6t.local:3000/authorize?redirect_uri=http%3A%2F%2Fc02c6157md6t.local%3A8081%2Fredirecturi&response_type=code&client_id=qknio6kHxTHOqQZuWwd5&state=1&scope=email%2Cphone';
+              }}
+            >
+              OAuth test
+            </Button>
           </Paper>
           <Box m={1} />
           <GridList cellHeight={400} className={classes.gridList} cols={3}>
