@@ -375,10 +375,19 @@ const Guest2: React.FC<Props> = ({ text }) => {
               variant="outlined"
               onClick={() => {
                 window.location.href =
-                  'http://c02c6157md6t.local:3000/authorize?redirect_uri=http%3A%2F%2Fc02c6157md6t.local%3A8081%2Fredirecturi&response_type=code&client_id=qknio6kHxTHOqQZuWwd5&state=1&scope=email%2Cphone';
+                  'http://c02c6157md6t.local:3000/authorize?redirect_uri=http%3A%2F%2Fc02c6157md6t.local%3A8081%2Fredirecturi&response_type=code&client_id=qknio6kHxTHOqQZuWwd5&state=1&scope=email+phone+openid&nonce=123456';
               }}
             >
               OAuth test
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                window.location.href =
+                  'http://localhost:8080/api/v1/.well-known/openid-configuration';
+              }}
+            >
+              OAuth Discovery
             </Button>
           </Paper>
           <Box m={1} />
