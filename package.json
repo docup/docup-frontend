@@ -20,7 +20,7 @@
     "react-google-button": "^0.7.1",
     "react-hook-form": "^6.5.3",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.0",
+    "react-scripts": "^5.0.1",
     "redux": "^4.0.5",
     "typeface-roboto": "^0.0.75",
     "typescript": "~3.7.2",
